@@ -146,7 +146,7 @@ namespace ALE_Biggest_Grids_Broadcast {
 
             List<KeyValuePair<long, List<MyCubeGrid>>> gridsList = new List<KeyValuePair<long, List<MyCubeGrid>>>();
 
-            foreach(KeyValuePair<long, List<MyCubeGrid>> pair in gridsList) {
+            foreach(KeyValuePair<long, List<MyCubeGrid>> pair in sortedGrids) {
 
                 if (pair.Key == 0)
                     continue;
