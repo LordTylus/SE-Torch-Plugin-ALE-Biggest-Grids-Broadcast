@@ -45,7 +45,7 @@ namespace ALE_Biggest_Grids_Broadcast {
             sb.AppendLine("Number of grids: " + Plugin.TopGrids);
             sb.AppendLine("Player distance: " + Plugin.MaxDistancePlayers);
             sb.AppendLine("Min PCU: "+ Plugin.MinPCU);
-            sb.AppendLine("Include: "+ (Plugin.PhysicalGroup ? "Phyiscal Connections (Rotors, Pistons)" : "Mechanical Connections (Rotors, Pistons, Connectors)"));
+            sb.AppendLine("Include: "+ (!Plugin.UseConnectedGrids ? "Phyiscal Connections (Rotors, Pistons)" : "Mechanical Connections (Rotors, Pistons, Connectors)"));
             sb.AppendLine();
 
             sb.AppendLine("Result");
@@ -84,7 +84,7 @@ namespace ALE_Biggest_Grids_Broadcast {
 
             List<KeyValuePair<long, List<MyCubeGrid>>> gridsList = new List<KeyValuePair<long, List<MyCubeGrid>>>();
 
-            if (Plugin.PhysicalGroup) {
+            if (!Plugin.UseConnectedGrids) {
 
                 foreach (var group in MyCubeGridGroups.Static.Physical.Groups)
                     gridsList.Add(CheckGroupsPcu(group.Nodes));

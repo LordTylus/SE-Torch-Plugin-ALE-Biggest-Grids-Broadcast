@@ -23,7 +23,7 @@ namespace ALE_Biggest_Grids_Broadcast
 
         public int TopGrids { get { return Config.TopGrids; } }
         public int MaxDistancePlayers { get { return Config.MaxDistancePlayers; } }
-        public bool PhysicalGroup { get { return Config.PhysicalGroup; } }
+        public bool UseConnectedGrids { get { return Config.UseConnectedGrids; } }
         public int MinPCU { get { return Config.MinPCU; } }
         
         private Control _control;
