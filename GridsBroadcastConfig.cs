@@ -22,7 +22,5 @@ namespace ALE_Biggest_Grids_Broadcast {
         public bool UseConnectedGrids { get => _useConnectedGrids; set => SetValue(ref _useConnectedGrids, value); }
 
         public int MinPCU { get => _minPCU; set => SetValue(ref _minPCU, value); }
-
-        public int GpsTimeoutSeconds { get => _gpsTimeoutSeconds; set => SetValue(ref _gpsTimeoutSeconds, value); }
     }
 }
