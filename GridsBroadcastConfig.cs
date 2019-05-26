@@ -13,6 +13,7 @@ namespace ALE_Biggest_Grids_Broadcast {
         private int _maxDistancePlayers = 1000; //1 Km
         private bool _useConnectedGrids = false; //Only Grids and Subgrids (no connectors)
         private int _minPCU = 5000; //5000 everything below that will be ignored
+        private int _gpsTimeoutSeconds = 1800; //30 Minutes
 
         public int TopGrids { get => _topGrids; set => SetValue(ref _topGrids, value); }
 
@@ -21,5 +22,7 @@ namespace ALE_Biggest_Grids_Broadcast {
         public bool UseConnectedGrids { get => _useConnectedGrids; set => SetValue(ref _useConnectedGrids, value); }
 
         public int MinPCU { get => _minPCU; set => SetValue(ref _minPCU, value); }
+
+        public int GpsTimeoutSeconds { get => _gpsTimeoutSeconds; set => SetValue(ref _gpsTimeoutSeconds, value); }
     }
 }

@@ -25,7 +25,8 @@ namespace ALE_Biggest_Grids_Broadcast
         public int MaxDistancePlayers { get { return Config.MaxDistancePlayers; } }
         public bool UseConnectedGrids { get { return Config.UseConnectedGrids; } }
         public int MinPCU { get { return Config.MinPCU; } }
-        
+        public double GpsTimeoutSeconds { get { return Config.GpsTimeoutSeconds; } }
+
         private Control _control;
         public UserControl GetControl() => _control ?? (_control = new Control(this));
 

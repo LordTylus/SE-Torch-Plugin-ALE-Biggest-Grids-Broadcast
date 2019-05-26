@@ -1,6 +1,8 @@
 ﻿using NLog;
 using Sandbox.Game.Entities;
+using Sandbox.Game.Screens.Helpers;
 using Sandbox.Game.World;
+using Sandbox.ModAPI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,6 +32,37 @@ namespace ALE_Biggest_Grids_Broadcast {
             List<KeyValuePair<long, List<MyCubeGrid>>> grids = FindGrids();
             List<KeyValuePair<long, List<MyCubeGrid>>> filteredGrids = GetFilteredGrids(grids);
 
+            List<MyGps> gpsList = new List<MyGps>();
+
+            double seconds = (long) (DateTime.Now.ToUniversalTime() - new DateTime(1970, 1, 1)).TotalMilliseconds;
+
+            int i = 0;
+
+            foreach (KeyValuePair<long, List<MyCubeGrid>> pair in filteredGrids) {
+
+                i++;
+
+                MyCubeGrid grid = pair.Value[0]; /* Cannot be empty because where do the PCUs come from? */
+
+                var position = grid.PositionComp.GetPosition();
+
+                MyGps gps = new MyGps();
+                gps.Coords = grid.PositionComp.GetPosition();
+                gps.Name = "Top Grid: " + grid.DisplayName+ " " +seconds;
+                gps.DisplayName = "Top Grid: " + grid.DisplayName;
+                gps.Description = ($"Grid currently in Top {i}");
+                gps.GPSColor = new Color(255, 0, 0);
+                gps.IsContainerGPS = true;
+                gps.ShowOnHud = true;
+                gps.DiscardAt = new TimeSpan?();
+                gps.UpdateHash();
+
+                gpsList.Add(gps);
+            }
+
+            foreach (MyPlayer player in MySession.Static.Players.GetOnlinePlayers()) 
+                foreach (MyGps gps in gpsList)
+                    MyAPIGateway.Session?.GPS.AddGps(player.Identity.IdentityId, gps);
         }
 
         [Command("listbiggrids", "Looks for rotorguns on the server!")]
