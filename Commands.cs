@@ -29,6 +29,8 @@ namespace ALE_Biggest_Grids_Broadcast {
         [Permission(MyPromoteLevel.Admin)]
         public void SendBiggestGrids() {
 
+            Plugin.removeGpsFromAllPlayers();
+
             List<KeyValuePair<long, List<MyCubeGrid>>> grids = FindGrids();
             List<KeyValuePair<long, List<MyCubeGrid>>> filteredGrids = GetFilteredGrids(grids);
 
@@ -101,7 +103,22 @@ namespace ALE_Biggest_Grids_Broadcast {
 
                 i++;
 
-                sb.AppendLine(i+". "+pair.Key.ToString("#,##0") + " PCU");
+                MyCubeGrid biggestGrid = null;
+                double num = 0;
+
+                foreach (MyCubeGrid cubeGrid in pair.Value) {
+
+                    if (cubeGrid.Physics == null)
+                        continue;
+
+                    double volume = cubeGrid.PositionComp.WorldAABB.Size.Volume;
+                    if (volume > num) {
+                        num = volume;
+                        biggestGrid = cubeGrid;
+                    }
+                }
+
+                sb.AppendLine(i+". "+pair.Key.ToString("#,##0") + " PCU"+" - "+ biggestGrid.DisplayName);
                 sb.AppendLine("   "+pair.Value.Count +" Grids.");
 
                 MyCubeGrid grid = pair.Value[0]; /* Cannot be empty because where do the PCUs come from? */
