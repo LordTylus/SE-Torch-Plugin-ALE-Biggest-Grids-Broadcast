@@ -25,8 +25,8 @@ namespace ALE_Biggest_Grids_Broadcast {
 
         public GridsBroadcastPlugin Plugin => (GridsBroadcastPlugin) Context.Plugin;
 
-        [Command("sendbiggrids", "Looks for rotorguns on the server!")]
-        [Permission(MyPromoteLevel.Owner)]
+        [Command("sendbiggps", "Sends Top X biggest Grids to all Players!")]
+        [Permission(MyPromoteLevel.Admin)]
         public void SendBiggestGrids() {
 
             List<KeyValuePair<long, List<MyCubeGrid>>> grids = FindGrids();
@@ -50,7 +50,7 @@ namespace ALE_Biggest_Grids_Broadcast {
                 gps.Coords = grid.PositionComp.GetPosition();
                 gps.Name = "Top Grid: " + grid.DisplayName+ " " +seconds;
                 gps.DisplayName = "Top Grid: " + grid.DisplayName;
-                gps.Description = ($"Grid currently in Top {i}");
+                gps.Description = ($"Top Grid: Grid currently in Top {i} by {Plugin.GpsIdentifierName}");
                 gps.GPSColor = new Color(255, 0, 0);
                 gps.IsContainerGPS = true;
                 gps.ShowOnHud = true;
@@ -63,9 +63,20 @@ namespace ALE_Biggest_Grids_Broadcast {
             foreach (MyPlayer player in MySession.Static.Players.GetOnlinePlayers()) 
                 foreach (MyGps gps in gpsList)
                     MyAPIGateway.Session?.GPS.AddGps(player.Identity.IdentityId, gps);
+
+            Context.Respond("Biggest grid GPS added!");
         }
 
-        [Command("listbiggrids", "Looks for rotorguns on the server!")]
+        [Command("removebiggps", "Deletes active biggest grids coordinates from all players!")]
+        [Permission(MyPromoteLevel.Admin)]
+        public void Removebiggrids() {
+
+            Plugin.removeGpsFromAllPlayers();
+
+            Context.Respond("Biggest grid GPS removed!");
+        }
+
+        [Command("listbiggrids", "Lists the Top X biggest grids (those who would be send to all players)!")]
         [Permission(MyPromoteLevel.Moderator)]
         public void ListBiggestGrids() {
 

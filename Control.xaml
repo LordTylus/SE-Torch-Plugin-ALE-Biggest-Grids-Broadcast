@@ -24,6 +24,9 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
         <TextBlock Grid.Column="0" Grid.Row ="0" VerticalAlignment="Center" Text="ALE Biggest Grids Broadcast" FontWeight="Bold" FontSize="16" Grid.ColumnSpan="2" Margin="5"/>
@@ -40,13 +43,21 @@
         <TextBlock Grid.Column="0" Grid.Row ="4" VerticalAlignment="Center" Text="Include connected grids" Margin="5"/>
         <CheckBox Name="UseConnectedGrids" Grid.Column="1" Grid.Row ="4" Grid.ColumnSpan="2" Margin="5" IsChecked="{Binding UseConnectedGrids}"/>
 
-        <Button Grid.Column="2" Grid.Row="5" Content="Save Config" Margin="5" Click="SaveButton_OnClick"></Button>
+        <TextBlock Grid.Column="0" Grid.Row ="5" VerticalAlignment="Center" Text="GPS Marker Identifier" Margin="5"/>
+        <TextBox Name="GpsIdentifierName" Grid.Column="1" Grid.Row ="5" Grid.ColumnSpan="2" Margin="5" Text="{Binding GpsIdentifierName}"/>
 
-        <TextBlock Grid.Column="0" Grid.Row ="6" VerticalAlignment="Center" Grid.ColumnSpan="2" Text="Commands" Margin="5" FontWeight="Bold" />
-        <TextBlock Grid.Column="0" Grid.Row ="7" VerticalAlignment="Center" Text="!sendbiggrids" Margin="5" />
-        <TextBlock Grid.Column="1" Grid.Row ="7" VerticalAlignment="Center" Grid.ColumnSpan="2" TextWrapping="Wrap" Text="Sends the top X grids to all online players." Margin="5"/>
-        <TextBlock Grid.Column="0" Grid.Row ="8" VerticalAlignment="Center" Text="!listbiggrids" Margin="5" />
-        <TextBlock Grid.Column="1" Grid.Row ="8" VerticalAlignment="Center" Grid.ColumnSpan="2" TextWrapping="Wrap" Text="Only lists the top x grids for the commands user." Margin="5"/>
+        <TextBlock Grid.Column="0" Grid.Row ="6" VerticalAlignment="Center" Text="Remove GPS on Player Join" Margin="5"/>
+        <CheckBox Name="RemoveGpsOnJoin" Grid.Column="1" Grid.Row ="6" Grid.ColumnSpan="2" Margin="5" IsChecked="{Binding RemoveGpsOnJoin}"/>
+
+        <Button Grid.Column="2" Grid.Row="7" Content="Save Config" Margin="5" Click="SaveButton_OnClick"></Button>
+
+        <TextBlock Grid.Column="0" Grid.Row ="8" VerticalAlignment="Center" Grid.ColumnSpan="2" Text="Commands" Margin="5" FontWeight="Bold" />
+        <TextBlock Grid.Column="0" Grid.Row ="9" VerticalAlignment="Center" Text="!sendbiggps" Margin="5" />
+        <TextBlock Grid.Column="1" Grid.Row ="9" VerticalAlignment="Center" Grid.ColumnSpan="2" TextWrapping="Wrap" Text="Sends the top X grids to all online players." Margin="5"  />
+        <TextBlock Grid.Column="0" Grid.Row ="10" VerticalAlignment="Center" Text="!removebiggps" Margin="5" />
+        <TextBlock Grid.Column="1" Grid.Row ="10" VerticalAlignment="Center" Grid.ColumnSpan="2" TextWrapping="Wrap" Text="Removes Previously sent GPS" Margin="5"/>
+        <TextBlock Grid.Column="0" Grid.Row ="11" VerticalAlignment="Center" Text="!listbiggrids" Margin="5" />
+        <TextBlock Grid.Column="1" Grid.Row ="11" VerticalAlignment="Center" Grid.ColumnSpan="2" TextWrapping="Wrap" Text="Only lists the top x grids for the commands user." Margin="5"/>
         
     </Grid>
 </UserControl>
