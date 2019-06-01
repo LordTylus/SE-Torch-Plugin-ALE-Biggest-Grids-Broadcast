@@ -16,6 +16,7 @@ using Torch.API.Plugins;
 using Torch.API.Session;
 using Torch.Session;
 using VRage.Game.ModAPI;
+using VRageMath;
 
 namespace ALE_Biggest_Grids_Broadcast
 {
@@ -37,6 +38,17 @@ namespace ALE_Biggest_Grids_Broadcast
         public int MinPCU { get { return Config.MinPCU; } }
         public bool RemoveGpsOnJoin { get { return Config.RemoveGpsOnJoin; } }
         public string GpsIdentifierName { get { return Config.GpsIdentifierName; } }
+
+        public Color GpsColor {
+
+            get {
+
+                return new Color(
+                    Math.Min(255, Config.ColorRed),
+                    Math.Min(255, Config.ColorGreen),
+                    Math.Min(255, Config.ColorBlue));
+            }
+        }
 
         private Control _control;
         public UserControl GetControl() => _control ?? (_control = new Control(this));
@@ -100,7 +112,6 @@ namespace ALE_Biggest_Grids_Broadcast
                         multiplayerManagerBase.PlayerLeft -= playerLeft;
                     }
                         
-
                     break;
             }
         }

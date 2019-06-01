@@ -11,6 +11,8 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" SharedSizeGroup="Labels"/>
             <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="Auto" SharedSizeGroup="Buttons"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
@@ -29,35 +31,40 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.Column="0" Grid.Row ="0" VerticalAlignment="Center" Text="ALE Biggest Grids Broadcast" FontWeight="Bold" FontSize="16" Grid.ColumnSpan="2" Margin="5"/>
+        <TextBlock Grid.Column="0" Grid.Row ="0"  VerticalAlignment="Center" Text="ALE Biggest Grids Broadcast" FontWeight="Bold" FontSize="16" Grid.ColumnSpan="4" Margin="5"/>
 
         <TextBlock Grid.Column="0" Grid.Row ="1" VerticalAlignment="Center" Text="Broadcast top X grids" Margin="5"/>
-        <TextBox Name="TopGrids" Grid.Column="1" Grid.Row ="1" Grid.ColumnSpan="2" Margin="5" Text="{Binding TopGrids}"/>
+        <TextBox Name="TopGrids" Grid.Column="1" Grid.Row ="1" Grid.ColumnSpan="3" Margin="5" Text="{Binding TopGrids}"/>
 
         <TextBlock Grid.Column="0" Grid.Row ="2" VerticalAlignment="Center" Text="Only check Grid where a faction member is in radius of (m)" Margin="5"/>
-        <TextBox Name="MaxDistancePlayers" Grid.Column="1" Grid.Row ="2" Grid.ColumnSpan="2" Margin="5" Text="{Binding MaxDistancePlayers}"/>
+        <TextBox Name="MaxDistancePlayers" Grid.Column="1" Grid.Row ="2" Grid.ColumnSpan="3" Margin="5" Text="{Binding MaxDistancePlayers}"/>
 
         <TextBlock Grid.Column="0" Grid.Row ="3" VerticalAlignment="Center" Text="Show only grids with min PCU" Margin="5"/>
-        <TextBox Name="MinPCU" Grid.Column="1" Grid.Row ="3" Grid.ColumnSpan="2" Margin="5" Text="{Binding MinPCU}"/>
+        <TextBox Name="MinPCU" Grid.Column="1" Grid.Row ="3" Grid.ColumnSpan="3" Margin="5" Text="{Binding MinPCU}"/>
 
         <TextBlock Grid.Column="0" Grid.Row ="4" VerticalAlignment="Center" Text="Include connected grids" Margin="5"/>
-        <CheckBox Name="UseConnectedGrids" Grid.Column="1" Grid.Row ="4" Grid.ColumnSpan="2" Margin="5" IsChecked="{Binding UseConnectedGrids}"/>
+        <CheckBox Name="UseConnectedGrids" Grid.Column="1" Grid.Row ="4" Grid.ColumnSpan="3" Margin="5" IsChecked="{Binding UseConnectedGrids}"/>
 
         <TextBlock Grid.Column="0" Grid.Row ="5" VerticalAlignment="Center" Text="GPS Marker Identifier" Margin="5"/>
-        <TextBox Name="GpsIdentifierName" Grid.Column="1" Grid.Row ="5" Grid.ColumnSpan="2" Margin="5" Text="{Binding GpsIdentifierName}"/>
+        <TextBox Name="GpsIdentifierName" Grid.Column="1" Grid.Row ="5" Grid.ColumnSpan="3" Margin="5" Text="{Binding GpsIdentifierName}"/>
 
         <TextBlock Grid.Column="0" Grid.Row ="6" VerticalAlignment="Center" Text="Remove GPS on Player Join" Margin="5"/>
-        <CheckBox Name="RemoveGpsOnJoin" Grid.Column="1" Grid.Row ="6" Grid.ColumnSpan="2" Margin="5" IsChecked="{Binding RemoveGpsOnJoin}"/>
+        <CheckBox Name="RemoveGpsOnJoin" Grid.Column="1" Grid.Row ="6" Grid.ColumnSpan="3" Margin="5" IsChecked="{Binding RemoveGpsOnJoin}"/>
 
-        <Button Grid.Column="2" Grid.Row="7" Content="Save Config" Margin="5" Click="SaveButton_OnClick"></Button>
+        <TextBlock Grid.Column="0" Grid.Row ="7" VerticalAlignment="Center" Text="Color (RGB)" Margin="5"/>
+        <TextBox Name="ColorRed" Grid.Column="1" Grid.Row ="7" Margin="5" Text="{Binding ColorRed}"/>
+        <TextBox Name="ColorGreen" Grid.Column="2" Grid.Row ="7" Margin="5" Text="{Binding ColorGreen}"/>
+        <TextBox Name="ColorBlue" Grid.Column="3" Grid.Row ="7" Margin="5" Text="{Binding ColorBlue}"/>
 
-        <TextBlock Grid.Column="0" Grid.Row ="8" VerticalAlignment="Center" Grid.ColumnSpan="2" Text="Commands" Margin="5" FontWeight="Bold" />
-        <TextBlock Grid.Column="0" Grid.Row ="9" VerticalAlignment="Center" Text="!sendbiggps" Margin="5" />
-        <TextBlock Grid.Column="1" Grid.Row ="9" VerticalAlignment="Center" Grid.ColumnSpan="2" TextWrapping="Wrap" Text="Sends the top X grids to all online players." Margin="5"  />
-        <TextBlock Grid.Column="0" Grid.Row ="10" VerticalAlignment="Center" Text="!removebiggps" Margin="5" />
-        <TextBlock Grid.Column="1" Grid.Row ="10" VerticalAlignment="Center" Grid.ColumnSpan="2" TextWrapping="Wrap" Text="Removes Previously sent GPS" Margin="5"/>
-        <TextBlock Grid.Column="0" Grid.Row ="11" VerticalAlignment="Center" Text="!listbiggrids" Margin="5" />
-        <TextBlock Grid.Column="1" Grid.Row ="11" VerticalAlignment="Center" Grid.ColumnSpan="2" TextWrapping="Wrap" Text="Only lists the top x grids for the commands user." Margin="5"/>
+        <Button Grid.Column="3" Grid.Row="8" Content="Save Config" Margin="5" Click="SaveButton_OnClick"></Button>
+
+        <TextBlock Grid.Column="0" Grid.Row ="9" VerticalAlignment="Center" Grid.ColumnSpan="4" Text="Commands" Margin="5" FontWeight="Bold" />
+        <TextBlock Grid.Column="0" Grid.Row ="10" VerticalAlignment="Center" Text="!sendbiggps" Margin="5" />
+        <TextBlock Grid.Column="1" Grid.Row ="10" VerticalAlignment="Center" Grid.ColumnSpan="3" TextWrapping="Wrap" Text="Sends the top X grids to all online players." Margin="5"  />
+        <TextBlock Grid.Column="0" Grid.Row ="11" VerticalAlignment="Center" Text="!removebiggps" Margin="5" />
+        <TextBlock Grid.Column="1" Grid.Row ="11" VerticalAlignment="Center" Grid.ColumnSpan="3" TextWrapping="Wrap" Text="Removes Previously sent GPS" Margin="5"/>
+        <TextBlock Grid.Column="0" Grid.Row ="12" VerticalAlignment="Center" Text="!listbiggrids" Margin="5" />
+        <TextBlock Grid.Column="1" Grid.Row ="12" VerticalAlignment="Center" Grid.ColumnSpan="3" TextWrapping="Wrap" Text="Only lists the top x grids for the commands user." Margin="5"/>
         
     </Grid>
 </UserControl>

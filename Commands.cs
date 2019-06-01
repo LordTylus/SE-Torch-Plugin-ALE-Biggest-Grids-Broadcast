@@ -40,6 +40,8 @@ namespace ALE_Biggest_Grids_Broadcast {
 
             int i = 0;
 
+            Color gpsColor = Plugin.GpsColor;
+
             foreach (KeyValuePair<long, List<MyCubeGrid>> pair in filteredGrids) {
 
                 i++;
@@ -50,10 +52,10 @@ namespace ALE_Biggest_Grids_Broadcast {
 
                 MyGps gps = new MyGps();
                 gps.Coords = grid.PositionComp.GetPosition();
-                gps.Name = "Top Grid: " + grid.DisplayName+ " " +seconds;
+                gps.Name = "Top Grid - " + grid.DisplayName+ " " +seconds;
                 gps.DisplayName = "Top Grid: " + grid.DisplayName;
                 gps.Description = ($"Top Grid: Grid currently in Top {i} by {Plugin.GpsIdentifierName}");
-                gps.GPSColor = new Color(255, 0, 0);
+                gps.GPSColor = gpsColor;
                 gps.IsContainerGPS = true;
                 gps.ShowOnHud = true;
                 gps.DiscardAt = new TimeSpan?();
