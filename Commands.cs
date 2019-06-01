@@ -147,7 +147,7 @@ namespace ALE_Biggest_Grids_Broadcast {
 
             List<KeyValuePair<long, List<MyCubeGrid>>> gridsList = new List<KeyValuePair<long, List<MyCubeGrid>>>();
 
-            if (!Plugin.UseConnectedGrids) {
+            if (Plugin.UseConnectedGrids) {
 
                 foreach (var group in MyCubeGridGroups.Static.Physical.Groups)
                     gridsList.Add(CheckGroupsPcu(group.Nodes));
