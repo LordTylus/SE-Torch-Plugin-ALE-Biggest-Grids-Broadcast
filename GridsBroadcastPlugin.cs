@@ -98,7 +98,6 @@ namespace ALE_Biggest_Grids_Broadcast
                     } else {
                         Log.Warn("No multiplayer manager loaded!");
                     }
-                        
 
                     removeGpsFromAllPlayers();
 
