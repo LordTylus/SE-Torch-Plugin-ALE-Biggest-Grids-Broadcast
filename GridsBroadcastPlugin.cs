@@ -119,14 +119,14 @@ namespace ALE_Biggest_Grids_Broadcast
 
             long idendity = MySession.Static.Players.TryGetIdentityId(player.SteamId);
 
-            Log.Info("Player " + player.Name + " with ID " + player.SteamId + " and Identity " + idendity + " left.");
+            Log.Debug("Player " + player.Name + " with ID " + player.SteamId + " and Identity " + idendity + " left.");
 
             if (idendity == 0)
                 return;
 
             if (Config.RemoveGpsOnJoin) {
 
-                Log.Info("Removing Biggest Grid GPS for Player #" + idendity);
+                Log.Debug("Removing Biggest Grid GPS for Player #" + idendity);
                 removeGpsFromPlayer(idendity);
             }
         }
@@ -135,14 +135,14 @@ namespace ALE_Biggest_Grids_Broadcast
 
             long idendity = MySession.Static.Players.TryGetIdentityId(player.SteamId);
 
-            Log.Info("Player "+player.Name+" with ID "+player.SteamId+" and Identity "+idendity+" joined.");
+            Log.Debug("Player "+player.Name+" with ID "+player.SteamId+" and Identity "+idendity+" joined.");
 
             if (idendity == 0) 
                 return;
 
             if (Config.RemoveGpsOnJoin) {
 
-                Log.Info("Removing Biggest Grid GPS for Player #" + idendity);
+                Log.Debug("Removing Biggest Grid GPS for Player #" + idendity);
                 removeGpsFromPlayer(idendity);
             }
         }
