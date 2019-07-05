@@ -159,6 +159,9 @@ namespace ALE_Biggest_Grids_Broadcast
 
             List<IMyGps> gpsList = MyAPIGateway.Session?.GPS.GetGpsList(idendity);
 
+            if (gpsList == null)
+                return;
+
             foreach (IMyGps gps in gpsList) {
 
                 MyGps myGps = gps as MyGps;
@@ -166,7 +169,12 @@ namespace ALE_Biggest_Grids_Broadcast
                 if (myGps == null)
                     continue;
 
-                if (!myGps.Description.Contains("by "+GpsIdentifierName) || !myGps.Description.Contains("Top Grid:")) 
+                string desc = myGps.Description;
+
+                if (desc == null)
+                    continue;
+
+                if (!desc.Contains("by "+GpsIdentifierName) || !desc.Contains("Top Grid:")) 
                     continue;
 
                 MyAPIGateway.Session?.GPS.RemoveGps(idendity, gps);
