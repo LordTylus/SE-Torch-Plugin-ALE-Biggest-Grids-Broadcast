@@ -34,6 +34,7 @@ namespace ALE_Biggest_Grids_Broadcast
 
         public int TopGrids { get { return Config.TopGrids; } }
         public int MaxDistancePlayers { get { return Config.MaxDistancePlayers; } }
+        public int MinDistance { get { return Config.MinDistance; } }
         public bool UseConnectedGrids { get { return Config.UseConnectedGrids; } }
         public int MinPCU { get { return Config.MinPCU; } }
         public bool RemoveGpsOnJoin { get { return Config.RemoveGpsOnJoin; } }

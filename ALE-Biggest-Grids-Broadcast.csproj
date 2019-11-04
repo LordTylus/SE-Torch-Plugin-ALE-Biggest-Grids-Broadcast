@@ -109,6 +109,10 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AbstractGridDetectionStrategy.cs" />
+    <Compile Include="BiggestGridDetectionStrategy.cs" />
+    <Compile Include="FurthestGridDetectionStrategy.cs" />
+    <Compile Include="GridDetectionStrategy.cs" />
     <Compile Include="GridsBroadcastPlugin.cs" />
     <Compile Include="Commands.cs" />
     <Compile Include="GridsBroadcastConfig.cs" />

@@ -13,6 +13,7 @@ namespace ALE_Biggest_Grids_Broadcast {
         private int _maxDistancePlayers = 1000; //1 Km
         private bool _useConnectedGrids = false; //Only Grids and Subgrids (no connectors)
         private int _minPCU = 5000; //5000 everything below that will be ignored
+        private int _minDistance = 3_000_000; //only further than 3,000 M away
         private bool _removeGpsOnJoin = true;
         private string _gpsIdentifierName = "Doom Plugin";
         private int _red = 255;
@@ -27,6 +28,8 @@ namespace ALE_Biggest_Grids_Broadcast {
         public bool UseConnectedGrids { get => _useConnectedGrids; set => SetValue(ref _useConnectedGrids, value); }
 
         public int MinPCU { get => _minPCU; set => SetValue(ref _minPCU, value); }
+
+        public int MinDistance { get => _minDistance; set => SetValue(ref _minDistance, value); }
 
         public bool RemoveGpsOnJoin { get => _removeGpsOnJoin; set => SetValue(ref _removeGpsOnJoin, value); }
 
