@@ -25,7 +25,7 @@ namespace ALE_Biggest_Grids_Broadcast {
         [Permission(MyPromoteLevel.Admin)]
         public void SendBiggestGrids() {
 
-            SendGrids(BiggestGridDetectionStrategy.INSTANCE, Plugin.MinPCU);
+            SendGridsInternal(true, false);
 
             Context.Respond("Biggest grid GPS added!");
         }
@@ -34,22 +34,44 @@ namespace ALE_Biggest_Grids_Broadcast {
         [Permission(MyPromoteLevel.Admin)]
         public void SendFurthestGrids() {
 
-            SendGrids(FurthestGridDetectionStrategy.INSTANCE, Plugin.MinDistance);
+            SendGridsInternal(false, true);
 
             Context.Respond("Furthest grid GPS added!");
         }
 
-        private void SendGrids(GridDetectionStrategy gridDetectionStrategy, int min) {
+        [Command("sendmixgps", "Sends Top X defined Grids from center to all Players!")]
+        [Permission(MyPromoteLevel.Admin)]
+        public void SendGrids(bool biggest, bool furthest) {
+
+            SendGridsInternal(biggest, furthest);
+
+            Context.Respond("Defined grid GPS added!");
+        }
+
+        private void SendGridsInternal(bool biggest, bool furthest) {
 
             Plugin.removeGpsFromAllPlayers();
+
+            HashSet<MyGps> gpsSet = new HashSet<MyGps>();
+            long seconds = GetTimeMs();
+
+            if (biggest)
+                gpsSet.UnionWith(FindGrids(BiggestGridDetectionStrategy.INSTANCE, Plugin.MinPCU, seconds));
+
+            if(furthest)
+                gpsSet.UnionWith(FindGrids(FurthestGridDetectionStrategy.INSTANCE, Plugin.MinDistance, seconds));
+
+            if (gpsSet.Count > 0)
+                SendGps(gpsSet);
+        }
+
+        private List<MyGps> FindGrids(GridDetectionStrategy gridDetectionStrategy, int min, long seconds) {
 
             List<KeyValuePair<long, List<MyCubeGrid>>> grids = gridDetectionStrategy.FindGrids(Plugin.UseConnectedGrids);
             List<KeyValuePair<long, List<MyCubeGrid>>> filteredGrids = gridDetectionStrategy.GetFilteredGrids(grids,
                 min, Plugin.MaxDistancePlayers, Plugin.TopGrids, true);
 
             List<MyGps> gpsList = new List<MyGps>();
-
-            long seconds = GetTimeMs();
 
             int i = 0;
 
@@ -68,8 +90,13 @@ namespace ALE_Biggest_Grids_Broadcast {
                 gpsList.Add(gps);
             }
 
+            return gpsList;
+        }
+
+        private void SendGps(HashSet<MyGps> gpsSet) {
+
             foreach (MyPlayer player in MySession.Static.Players.GetOnlinePlayers())
-                foreach (MyGps gps in gpsList)
+                foreach (MyGps gps in gpsSet)
                     MyAPIGateway.Session?.GPS.AddGps(player.Identity.IdentityId, gps);
         }
 
@@ -91,16 +118,40 @@ namespace ALE_Biggest_Grids_Broadcast {
         [Command("listbiggrids", "Lists the Top X biggest grids (those which would be send to all players)!")]
         [Permission(MyPromoteLevel.Moderator)]
         public void ListBiggestGrids() {
-            ListGrids(BiggestGridDetectionStrategy.INSTANCE, Plugin.MinPCU);
+            ListGridsInternal(true, false);
         }
 
         [Command("listfargrids", "Lists the Top X furthest grids from world center (those which would be send to all players)!")]
         [Permission(MyPromoteLevel.Moderator)]
         public void ListFurthestGrids() {
-            ListGrids(FurthestGridDetectionStrategy.INSTANCE, Plugin.MinDistance);
+            ListGridsInternal(false, true);
         }
 
-        private void ListGrids(GridDetectionStrategy gridDetectionStrategy, int min) {
+
+        [Command("listmixgrids", "Lists the Top X furthest and biggest grids (configurable)!")]
+        [Permission(MyPromoteLevel.Moderator)]
+        public void ListFurthestGrids(bool biggest, bool furthest) {
+            ListGridsInternal(biggest, furthest);
+        }
+
+        private void ListGridsInternal(bool biggest, bool furthest) {
+
+            StringBuilder sb = new StringBuilder();
+            long seconds = GetTimeMs();
+
+            if (biggest)
+                AddGridsToSb(BiggestGridDetectionStrategy.INSTANCE, Plugin.MinPCU, sb, seconds);
+
+            if (furthest)
+                AddGridsToSb(FurthestGridDetectionStrategy.INSTANCE, Plugin.MinDistance, sb, seconds);
+
+            if (Context.Player == null) 
+                Context.Respond(sb.ToString());
+            else 
+                ModCommunication.SendMessageTo(new DialogMessage("List of Grids", "Top " + Plugin.TopGrids + " grids", sb.ToString()), Context.Player.SteamUserId);
+        }
+
+        private void AddGridsToSb(GridDetectionStrategy gridDetectionStrategy, int min, StringBuilder sb, long seconds) {
 
             int top = Plugin.TopGrids;
             int playerdistance = Plugin.MaxDistancePlayers;
@@ -145,7 +196,8 @@ namespace ALE_Biggest_Grids_Broadcast {
             List<KeyValuePair<long, List<MyCubeGrid>>> grids = gridDetectionStrategy.FindGrids(connected);
             List<KeyValuePair<long, List<MyCubeGrid>>> filteredGrids = gridDetectionStrategy.GetFilteredGrids(grids, min, playerdistance, top, filterOffline);
 
-            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("[Top " + top + " grids by " + gridDetectionStrategy.GetUnitName()+"]");
+            sb.AppendLine();
             sb.AppendLine("Used Settings");
             sb.AppendLine("---------------------------------------");
             sb.AppendLine("Number of grids: " + top);
@@ -157,14 +209,15 @@ namespace ALE_Biggest_Grids_Broadcast {
             sb.AppendLine("Result");
             sb.AppendLine("---------------------------------------");
 
-            long seconds = GetTimeMs();
-
             int i = 0;
 
             Color gpsColor = Plugin.GpsColor;
 
             if (gps && Context.Player != null)
                 Plugin.removeGpsFromPlayer(Context.Player.IdentityId);
+
+            if(filteredGrids.Count == 0)
+                sb.AppendLine("-");
 
             foreach (KeyValuePair<long, List<MyCubeGrid>> pair in filteredGrids) {
 
@@ -219,15 +272,8 @@ namespace ALE_Biggest_Grids_Broadcast {
                 }
             }
 
-            if (Context.Player == null) {
-
-                Context.Respond("Top " + top + " grids by "+ gridDetectionStrategy.GetUnitName());
-                Context.Respond(sb.ToString());
-
-            } else {
-
-                ModCommunication.SendMessageTo(new DialogMessage("List of Grids", "Top "+top+" grids by "+ gridDetectionStrategy.GetUnitName(), sb.ToString()), Context.Player.SteamUserId);
-            }
+            sb.AppendLine();
+            sb.AppendLine();
         }
 
         private long GetTimeMs() {

@@ -34,6 +34,8 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
         <TextBlock Grid.Column="0" Grid.Row ="0"  VerticalAlignment="Center" Text="ALE Biggest Grids Broadcast" FontWeight="Bold" FontSize="16" Grid.ColumnSpan="4" Margin="5"/>
@@ -71,12 +73,16 @@
         <TextBlock Grid.Column="0" Grid.Row ="12" VerticalAlignment="Center" Text="!sendbiggps" Margin="5" />
         <TextBlock Grid.Column="1" Grid.Row ="12" VerticalAlignment="Center" Grid.ColumnSpan="3" TextWrapping="Wrap" Text="Sends the top X biggest grids to all online players." Margin="5"  />
         <TextBlock Grid.Column="0" Grid.Row ="13" VerticalAlignment="Center" Text="!sendfargps" Margin="5" />
-        <TextBlock Grid.Column="1" Grid.Row ="13" VerticalAlignment="Center" Grid.ColumnSpan="3" TextWrapping="Wrap" Text="Sends the top X furthest grids from world to all online players." Margin="5"  />
-        <TextBlock Grid.Column="0" Grid.Row ="14" VerticalAlignment="Center" Text="!removegps" Margin="5" />
-        <TextBlock Grid.Column="1" Grid.Row ="14" VerticalAlignment="Center" Grid.ColumnSpan="3" TextWrapping="Wrap" Text="Removes Previously sent GPS" Margin="5"/>
-        <TextBlock Grid.Column="0" Grid.Row ="15" VerticalAlignment="Center" Text="!listbiggrids [-phsical|-mechanical] [-showOffline] [-gps] [-top=&lt;number of grids>] [distance=&lt;distance in m>] [-min=&lt;pcu>]" Margin="5" TextWrapping="Wrap" />
-        <TextBlock Grid.Column="1" Grid.Row ="15" VerticalAlignment="Top" Grid.ColumnSpan="3" TextWrapping="Wrap" Text="Only lists the top x biggest grids for the commands user." Margin="5"/>
-        <TextBlock Grid.Column="0" Grid.Row ="16" VerticalAlignment="Center" Text="!listfargrids [-phsical|-mechanical] [-showOffline] [-gps] [-top=&lt;number of grids>] [distance=&lt;distance in m>] [-min=&lt;pcu>]" Margin="5" TextWrapping="Wrap" />
-        <TextBlock Grid.Column="1" Grid.Row ="16" VerticalAlignment="Top" Grid.ColumnSpan="3" TextWrapping="Wrap" Text="Only lists the top x furthest grids for the commands user." Margin="5"/>        
+        <TextBlock Grid.Column="1" Grid.Row ="13" VerticalAlignment="Center" Grid.ColumnSpan="3" TextWrapping="Wrap" Text="Sends the top X biggest grids to all online players." Margin="5"  />
+        <TextBlock Grid.Column="0" Grid.Row ="14" VerticalAlignment="Center" Text="!sendmixgps &lt;big (true|false)> &lt;far (true|false)>" Margin="5" />
+        <TextBlock Grid.Column="1" Grid.Row ="14" VerticalAlignment="Center" Grid.ColumnSpan="3" TextWrapping="Wrap" Text="Sends a combination of grids for example biggest and furthest (true true) grids from world to all online players." Margin="5"  />
+        <TextBlock Grid.Column="0" Grid.Row ="15" VerticalAlignment="Center" Text="!removegps" Margin="5" />
+        <TextBlock Grid.Column="1" Grid.Row ="15" VerticalAlignment="Center" Grid.ColumnSpan="3" TextWrapping="Wrap" Text="Removes Previously sent GPS" Margin="5"/>
+        <TextBlock Grid.Column="0" Grid.Row ="16" VerticalAlignment="Center" Text="!listbiggrids [-phsical|-mechanical] [-showOffline] [-gps] [-top=&lt;number of grids>] [distance=&lt;distance in m>] [-min=&lt;pcu>]" Margin="5" TextWrapping="Wrap" />
+        <TextBlock Grid.Column="1" Grid.Row ="16" VerticalAlignment="Top" Grid.ColumnSpan="3" TextWrapping="Wrap" Text="Only lists the top x biggest grids for the commands user." Margin="5"/>
+        <TextBlock Grid.Column="0" Grid.Row ="17" VerticalAlignment="Center" Text="!listfargrids [-phsical|-mechanical] [-showOffline] [-gps] [-top=&lt;number of grids>] [distance=&lt;distance in m>] [-min=&lt;pcu>]" Margin="5" TextWrapping="Wrap" />
+        <TextBlock Grid.Column="1" Grid.Row ="17" VerticalAlignment="Top" Grid.ColumnSpan="3" TextWrapping="Wrap" Text="Only lists the top x furthest grids for the commands user." Margin="5"/>
+        <TextBlock Grid.Column="0" Grid.Row ="18" VerticalAlignment="Center" Text="!listmixgrids [-phsical|-mechanical] [-showOffline] [-gps] [-top=&lt;number of grids>] [distance=&lt;distance in m>] [-min=&lt;pcu>]" Margin="5" TextWrapping="Wrap" />
+        <TextBlock Grid.Column="1" Grid.Row ="18" VerticalAlignment="Top" Grid.ColumnSpan="3" TextWrapping="Wrap" Text="Lists the top x biggest and furthest grids for the commands user." Margin="5"/>
     </Grid>
 </UserControl>
