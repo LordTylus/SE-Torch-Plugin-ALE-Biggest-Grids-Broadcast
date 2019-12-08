@@ -50,26 +50,26 @@ namespace ALE_Biggest_Grids_Broadcast {
 
         private void SendGridsInternal(bool biggest, bool furthest) {
 
-            Plugin.removeGpsFromAllPlayers();
+            Plugin.RemoveGpsFromAllPlayers();
 
             HashSet<MyGps> gpsSet = new HashSet<MyGps>();
             long seconds = GetTimeMs();
 
             if (biggest)
-                gpsSet.UnionWith(FindGrids(BiggestGridDetectionStrategy.INSTANCE, Plugin.MinPCU, seconds));
+                gpsSet.UnionWith(FindGrids(BiggestGridDetectionStrategy.INSTANCE, Plugin.MinPCU, Plugin.MaxDistancePlayersBiggest, Plugin.IgnoreOfflineBiggest, seconds));
 
             if(furthest)
-                gpsSet.UnionWith(FindGrids(FurthestGridDetectionStrategy.INSTANCE, Plugin.MinDistance, seconds));
+                gpsSet.UnionWith(FindGrids(FurthestGridDetectionStrategy.INSTANCE, Plugin.MinDistance, Plugin.MaxDistancePlayersFurthest, Plugin.IgnoreOfflineFurthest, seconds));
 
             if (gpsSet.Count > 0)
                 SendGps(gpsSet);
         }
 
-        private List<MyGps> FindGrids(GridDetectionStrategy gridDetectionStrategy, int min, long seconds) {
+        private List<MyGps> FindGrids(GridDetectionStrategy gridDetectionStrategy, int min, int distance, bool ignoreOffline, long seconds) {
 
             List<KeyValuePair<long, List<MyCubeGrid>>> grids = gridDetectionStrategy.FindGrids(Plugin.UseConnectedGrids);
             List<KeyValuePair<long, List<MyCubeGrid>>> filteredGrids = gridDetectionStrategy.GetFilteredGrids(grids,
-                min, Plugin.MaxDistancePlayers, Plugin.TopGrids, true);
+                min, distance, Plugin.TopGrids, ignoreOffline);
 
             List<MyGps> gpsList = new List<MyGps>();
 
@@ -110,7 +110,7 @@ namespace ALE_Biggest_Grids_Broadcast {
         [Permission(MyPromoteLevel.Admin)]
         public void Removegps() {
 
-            Plugin.removeGpsFromAllPlayers();
+            Plugin.RemoveGpsFromAllPlayers();
 
             Context.Respond("Biggest grid GPS removed!");
         }
@@ -140,10 +140,10 @@ namespace ALE_Biggest_Grids_Broadcast {
             long seconds = GetTimeMs();
 
             if (biggest)
-                AddGridsToSb(BiggestGridDetectionStrategy.INSTANCE, Plugin.MinPCU, sb, seconds);
+                AddGridsToSb(BiggestGridDetectionStrategy.INSTANCE, Plugin.MinPCU, Plugin.MaxDistancePlayersBiggest, Plugin.IgnoreOfflineBiggest,  sb, seconds);
 
             if (furthest)
-                AddGridsToSb(FurthestGridDetectionStrategy.INSTANCE, Plugin.MinDistance, sb, seconds);
+                AddGridsToSb(FurthestGridDetectionStrategy.INSTANCE, Plugin.MinDistance, Plugin.MaxDistancePlayersFurthest, Plugin.IgnoreOfflineFurthest, sb, seconds);
 
             if (Context.Player == null) 
                 Context.Respond(sb.ToString());
@@ -151,12 +151,12 @@ namespace ALE_Biggest_Grids_Broadcast {
                 ModCommunication.SendMessageTo(new DialogMessage("List of Grids", "Top " + Plugin.TopGrids + " grids", sb.ToString()), Context.Player.SteamUserId);
         }
 
-        private void AddGridsToSb(GridDetectionStrategy gridDetectionStrategy, int min, StringBuilder sb, long seconds) {
+        private void AddGridsToSb(GridDetectionStrategy gridDetectionStrategy, int min, int distance, bool ignoreOffline, StringBuilder sb, long seconds) {
 
             int top = Plugin.TopGrids;
-            int playerdistance = Plugin.MaxDistancePlayers;
+            int playerdistance = distance;
             bool connected = Plugin.UseConnectedGrids;
-            bool filterOffline = true;
+            bool filterOffline = ignoreOffline;
             bool gps = false;
 
             List<string> args = Context.Args;
@@ -203,6 +203,7 @@ namespace ALE_Biggest_Grids_Broadcast {
             sb.AppendLine("Number of grids: " + top);
             sb.AppendLine("Player distance: " + playerdistance);
             sb.AppendLine("Min "+gridDetectionStrategy.GetUnitName()+": "+ min);
+            sb.AppendLine("Show Offline: " + !filterOffline);
             sb.AppendLine("Include: "+ (!connected ? "Phyiscal Connections (Rotors, Pistons)" : "Mechanical Connections (Rotors, Pistons, Connectors)"));
             sb.AppendLine();
 
@@ -214,7 +215,7 @@ namespace ALE_Biggest_Grids_Broadcast {
             Color gpsColor = Plugin.GpsColor;
 
             if (gps && Context.Player != null)
-                Plugin.removeGpsFromPlayer(Context.Player.IdentityId);
+                Plugin.RemoveGpsFromPlayer(Context.Player.IdentityId);
 
             if(filteredGrids.Count == 0)
                 sb.AppendLine("-");

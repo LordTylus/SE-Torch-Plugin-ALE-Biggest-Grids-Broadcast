@@ -10,29 +10,34 @@ namespace ALE_Biggest_Grids_Broadcast {
     public class GridsBroadcastConfig : ViewModel {
 
         private int _topGrids = 10; //Top 10 Grids
-        private int _maxDistancePlayers = 1000; //1 Km
         private bool _useConnectedGrids = false; //Only Grids and Subgrids (no connectors)
-        private int _minPCU = 5000; //5000 everything below that will be ignored
-        private int _minDistance = 3_000_000; //only further than 3,000 M away
         private bool _removeGpsOnJoin = true;
         private string _gpsIdentifierName = "Doom Plugin";
+
         private int _red = 255;
         private int _green = 0;
         private int _blue = 0;
 
+        private int _maxDistancePlayersBiggest = 1000; //1 Km
+        private int _minPCU = 5000; //5000 everything below that will be ignored
+        private bool _showOfflineBiggest = false;
+
+        private int _maxDistancePlayersFurthest = 1000; //1 Km
+        private int _minDistance = 3_000_000; //only further than 3,000 M away
+        private bool _showOfflineFurthest = false;
 
         public int TopGrids { get => _topGrids; set => SetValue(ref _topGrids, value); }
-
-        public int MaxDistancePlayers { get => _maxDistancePlayers; set => SetValue(ref _maxDistancePlayers, value); }
-
         public bool UseConnectedGrids { get => _useConnectedGrids; set => SetValue(ref _useConnectedGrids, value); }
 
+        public int MaxDistancePlayersBiggest{ get => _maxDistancePlayersBiggest; set => SetValue(ref _maxDistancePlayersBiggest, value); }
         public int MinPCU { get => _minPCU; set => SetValue(ref _minPCU, value); }
+        public bool ShowOfflineBiggest { get => _showOfflineBiggest; set => SetValue(ref _showOfflineBiggest, value); }
 
+        public int MaxDistancePlayersFurthest { get => _maxDistancePlayersFurthest; set => SetValue(ref _maxDistancePlayersFurthest, value); }
         public int MinDistance { get => _minDistance; set => SetValue(ref _minDistance, value); }
+        public bool ShowOfflineFurthest { get => _showOfflineFurthest; set => SetValue(ref _showOfflineFurthest, value); }
 
         public bool RemoveGpsOnJoin { get => _removeGpsOnJoin; set => SetValue(ref _removeGpsOnJoin, value); }
-
         public string GpsIdentifierName { get => _gpsIdentifierName; set => SetValue(ref _gpsIdentifierName, value); }
 
         public int ColorRed { get => _red; set => SetValue(ref _red, value); }

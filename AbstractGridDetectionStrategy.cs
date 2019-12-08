@@ -58,31 +58,55 @@ namespace ALE_Biggest_Grids_Broadcast {
 
                 if (faction != null) {
 
+                    bool allOffline = true;
+
                     foreach (long factionMember in faction.Members.Keys) {
 
                         MyPlayer member = GetPlayerById(factionMember);
+
+                        /* if member is not online and we filter offlines ignore. */
                         if (filterOffline && member == null)
                             continue;
 
-                        if (!filterOffline)
-                            return true;
+                        /* If member is online we need to remember that not all players are offline. */
+                        if (member != null) {
 
-                        Vector3D position = member.GetPosition();
+                            allOffline = false;
 
-                        if (Vector3D.DistanceSquared(gridPosition, position) <= minDistanceSquared)
-                            return true;
+                            Vector3D position = member.GetPosition();
+
+                            /* If player is close by grid is relevant */
+                            if (Vector3D.DistanceSquared(gridPosition, position) <= minDistanceSquared)
+                                return true;
+                        }
                     }
+
+                    /* If all players of that faction are offline. And we dont want to filter offlines grid is relevant. */
+                    if (allOffline && !filterOffline)
+                        return true;
 
                 } else {
 
                     MyPlayer owner = GetPlayerById(gridOwner);
-                    if (owner == null)
+
+                    /* If owner is offline and we dont want to see offlines continue */
+                    if (filterOffline && owner == null)
                         continue;
 
-                    Vector3D position = owner.GetPosition();
+                    if (owner != null) {
+                                            
+                        /* If player is online check distance */
 
-                    if (Vector3D.DistanceSquared(gridPosition, position) <= minDistanceSquared)
+                        Vector3D position = owner.GetPosition();
+
+                        if (Vector3D.DistanceSquared(gridPosition, position) <= minDistanceSquared)
+                            return true;
+
+                    } else if(!filterOffline) {
+
+                        /* if player is offline and we want to see offlines mark as relevant */
                         return true;
+                    }
                 }
             }
 

@@ -33,9 +33,12 @@ namespace ALE_Biggest_Grids_Broadcast
         public void Save() => _config.Save();
 
         public int TopGrids { get { return Config.TopGrids; } }
-        public int MaxDistancePlayers { get { return Config.MaxDistancePlayers; } }
-        public int MinDistance { get { return Config.MinDistance; } }
         public bool UseConnectedGrids { get { return Config.UseConnectedGrids; } }
+        public int MaxDistancePlayersBiggest { get { return Config.MaxDistancePlayersBiggest; } }
+        public int MaxDistancePlayersFurthest { get { return Config.MaxDistancePlayersFurthest; } }
+        public int MinDistance { get { return Config.MinDistance; } }
+        public bool IgnoreOfflineBiggest { get { return !Config.ShowOfflineBiggest; } }
+        public bool IgnoreOfflineFurthest { get { return !Config.ShowOfflineFurthest; } }
         public int MinPCU { get { return Config.MinPCU; } }
         public bool RemoveGpsOnJoin { get { return Config.RemoveGpsOnJoin; } }
         public string GpsIdentifierName { get { return Config.GpsIdentifierName; } }
@@ -93,14 +96,14 @@ namespace ALE_Biggest_Grids_Broadcast
 
                     if (multiplayerManagerBase != null) {
 
-                        multiplayerManagerBase.PlayerJoined += playerJoined;
-                        multiplayerManagerBase.PlayerLeft += playerLeft;
+                        multiplayerManagerBase.PlayerJoined += PlayerJoined;
+                        multiplayerManagerBase.PlayerLeft += PlayerLeft;
 
                     } else {
                         Log.Warn("No multiplayer manager loaded!");
                     }
 
-                    removeGpsFromAllPlayers();
+                    RemoveGpsFromAllPlayers();
 
                     break;
 
@@ -108,15 +111,15 @@ namespace ALE_Biggest_Grids_Broadcast
 
                     if (multiplayerManagerBase != null) {
 
-                        multiplayerManagerBase.PlayerJoined -= playerJoined;
-                        multiplayerManagerBase.PlayerLeft -= playerLeft;
+                        multiplayerManagerBase.PlayerJoined -= PlayerJoined;
+                        multiplayerManagerBase.PlayerLeft -= PlayerLeft;
                     }
                         
                     break;
             }
         }
 
-        private void playerLeft(IPlayer player) {
+        private void PlayerLeft(IPlayer player) {
 
             long idendity = MySession.Static.Players.TryGetIdentityId(player.SteamId);
 
@@ -128,11 +131,11 @@ namespace ALE_Biggest_Grids_Broadcast
             if (Config.RemoveGpsOnJoin) {
 
                 Log.Debug("Removing Biggest Grid GPS for Player #" + idendity);
-                removeGpsFromPlayer(idendity);
+                RemoveGpsFromPlayer(idendity);
             }
         }
 
-        private void playerJoined(IPlayer player) {
+        private void PlayerJoined(IPlayer player) {
 
             long idendity = MySession.Static.Players.TryGetIdentityId(player.SteamId);
 
@@ -144,19 +147,19 @@ namespace ALE_Biggest_Grids_Broadcast
             if (Config.RemoveGpsOnJoin) {
 
                 Log.Debug("Removing Biggest Grid GPS for Player #" + idendity);
-                removeGpsFromPlayer(idendity);
+                RemoveGpsFromPlayer(idendity);
             }
         }
 
-        public void removeGpsFromAllPlayers() {
+        public void RemoveGpsFromAllPlayers() {
 
             Log.Info("Removing Biggest Grid GPS from all Players.");
 
             foreach (var identity in MySession.Static.Players.GetAllIdentities()) 
-                removeGpsFromPlayer(identity.IdentityId);
+                RemoveGpsFromPlayer(identity.IdentityId);
         }
 
-        public void removeGpsFromPlayer(long idendity) {
+        public void RemoveGpsFromPlayer(long idendity) {
 
             List<IMyGps> gpsList = MyAPIGateway.Session?.GPS.GetGpsList(idendity);
 
@@ -165,9 +168,7 @@ namespace ALE_Biggest_Grids_Broadcast
 
             foreach (IMyGps gps in gpsList) {
 
-                MyGps myGps = gps as MyGps;
-
-                if (myGps == null)
+                if (!(gps is MyGps myGps))
                     continue;
 
                 string desc = myGps.Description;
