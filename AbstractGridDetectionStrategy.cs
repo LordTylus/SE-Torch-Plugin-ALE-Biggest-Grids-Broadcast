@@ -36,8 +36,6 @@ namespace ALE_Biggest_Grids_Broadcast {
 
         public bool CheckIfGridsAreRelevant(List<MyCubeGrid> grids, int distance, bool filterOffline) {
 
-            int minDistanceSquared = distance * distance;
-
             foreach (MyCubeGrid grid in grids) {
 
                 var gridOwnerList = grid.BigOwners;
@@ -76,7 +74,7 @@ namespace ALE_Biggest_Grids_Broadcast {
                             Vector3D position = member.GetPosition();
 
                             /* If player is close by grid is relevant */
-                            if (Vector3D.DistanceSquared(gridPosition, position) <= minDistanceSquared)
+                            if (Vector3D.Distance(gridPosition, position) <= distance)
                                 return true;
                         }
                     }
@@ -99,7 +97,7 @@ namespace ALE_Biggest_Grids_Broadcast {
 
                         Vector3D position = owner.GetPosition();
 
-                        if (Vector3D.DistanceSquared(gridPosition, position) <= minDistanceSquared)
+                        if (Vector3D.Distance(gridPosition, position) <= distance)
                             return true;
 
                     } else if(!filterOffline) {
