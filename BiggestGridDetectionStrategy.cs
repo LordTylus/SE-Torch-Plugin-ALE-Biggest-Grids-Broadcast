@@ -16,7 +16,7 @@ namespace ALE_Biggest_Grids_Broadcast {
             return "PCU";
         }
 
-        public override List<KeyValuePair<long, List<MyCubeGrid>>> FindGrids(bool connected) {
+        public override List<KeyValuePair<long, List<MyCubeGrid>>> FindGrids(GridsBroadcastConfig config, bool connected) {
 
             List<KeyValuePair<long, List<MyCubeGrid>>> gridsList = new List<KeyValuePair<long, List<MyCubeGrid>>>();
 

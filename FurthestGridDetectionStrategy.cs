@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Sandbox.Game.Entities;
 using VRage.Collections;
 using VRage.Groups;
+using VRageMath;
 
 namespace ALE_Biggest_Grids_Broadcast {
     class FurthestGridDetectionStrategy : AbstractGridDetectionStrategy {
@@ -17,19 +18,21 @@ namespace ALE_Biggest_Grids_Broadcast {
             return "m";
         }
 
-        public override List<KeyValuePair<long, List<MyCubeGrid>>> FindGrids(bool connected) {
+        public override List<KeyValuePair<long, List<MyCubeGrid>>> FindGrids(GridsBroadcastConfig config, bool connected) {
 
             List<KeyValuePair<long, List<MyCubeGrid>>> gridsList = new List<KeyValuePair<long, List<MyCubeGrid>>>();
+
+            var origin = new Vector3D(config.CenterX, config.CenterY, config.CenterZ);
 
             if (connected) {
 
                 foreach (var group in MyCubeGridGroups.Static.Physical.Groups)
-                    gridsList.Add(CheckGroupsDistance(group.Nodes));
+                    gridsList.Add(CheckGroupsDistance(origin, group.Nodes));
 
             } else {
 
                 foreach (var group in MyCubeGridGroups.Static.Mechanical.Groups)
-                    gridsList.Add(CheckGroupsDistance(group.Nodes));
+                    gridsList.Add(CheckGroupsDistance(origin, group.Nodes));
             }
 
             gridsList.Sort(delegate (KeyValuePair<long, List<MyCubeGrid>> pair1, KeyValuePair<long, List<MyCubeGrid>> pair2) {
@@ -39,7 +42,7 @@ namespace ALE_Biggest_Grids_Broadcast {
             return gridsList;
         }
 
-        private KeyValuePair<long, List<MyCubeGrid>> CheckGroupsDistance(HashSetReader<MyGroups<MyCubeGrid, MyGridMechanicalGroupData>.Node> nodes) {
+        private KeyValuePair<long, List<MyCubeGrid>> CheckGroupsDistance(Vector3D origin, HashSetReader<MyGroups<MyCubeGrid, MyGridMechanicalGroupData>.Node> nodes) {
 
             List<MyCubeGrid> gridsList = new List<MyCubeGrid>();
             double distance = 0;
@@ -53,13 +56,17 @@ namespace ALE_Biggest_Grids_Broadcast {
 
                 gridsList.Add(cubeGrid);
 
-                distance = Math.Max(distance, cubeGrid.PositionComp.GetPosition().Length());
+                var gridPositon = cubeGrid.PositionComp.GetPosition();
+
+                double distanceSquared = Vector3D.DistanceSquared(origin, gridPositon);
+
+                distance = Math.Max(distance, distanceSquared);
             }
 
-            return new KeyValuePair<long, List<MyCubeGrid>>((long) distance, gridsList);
+            return new KeyValuePair<long, List<MyCubeGrid>>((long) Math.Sqrt(distance), gridsList);
         }
 
-        private KeyValuePair<long, List<MyCubeGrid>> CheckGroupsDistance(HashSetReader<MyGroups<MyCubeGrid, MyGridPhysicalGroupData>.Node> nodes) {
+        private KeyValuePair<long, List<MyCubeGrid>> CheckGroupsDistance(Vector3D origin, HashSetReader<MyGroups<MyCubeGrid, MyGridPhysicalGroupData>.Node> nodes) {
 
             List<MyCubeGrid> gridsList = new List<MyCubeGrid>();
             double distance = 0;
@@ -73,10 +80,14 @@ namespace ALE_Biggest_Grids_Broadcast {
 
                 gridsList.Add(cubeGrid);
 
-                distance = Math.Max(distance, cubeGrid.PositionComp.GetPosition().Length());
+                var gridPositon = cubeGrid.PositionComp.GetPosition();
+
+                double distanceSquared = Vector3D.DistanceSquared(origin, gridPositon);
+
+                distance = Math.Max(distance, distanceSquared);
             }
 
-            return new KeyValuePair<long, List<MyCubeGrid>>((long) distance, gridsList);
+            return new KeyValuePair<long, List<MyCubeGrid>>((long) Math.Sqrt(distance), gridsList);
         }
     }
 }

@@ -26,6 +26,10 @@ namespace ALE_Biggest_Grids_Broadcast {
         private int _minDistance = 3_000_000; //only further than 3,000 M away
         private bool _showOfflineFurthest = false;
 
+        private double _centerX = 0;
+        private double _centerY = 0;
+        private double _centerZ = 0;
+
         public int TopGrids { get => _topGrids; set => SetValue(ref _topGrids, value); }
         public bool UseConnectedGrids { get => _useConnectedGrids; set => SetValue(ref _useConnectedGrids, value); }
 
@@ -43,5 +47,9 @@ namespace ALE_Biggest_Grids_Broadcast {
         public int ColorRed { get => _red; set => SetValue(ref _red, value); }
         public int ColorGreen { get => _green; set => SetValue(ref _green, value); }
         public int ColorBlue { get => _blue; set => SetValue(ref _blue, value); }
+
+        public double CenterX { get => _centerX; set => SetValue(ref _centerX, value); }
+        public double CenterY { get => _centerY; set => SetValue(ref _centerY, value); }
+        public double CenterZ { get => _centerZ; set => SetValue(ref _centerZ, value); }
     }
 }

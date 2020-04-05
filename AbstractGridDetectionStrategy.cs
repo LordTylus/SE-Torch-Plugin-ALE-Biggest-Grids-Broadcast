@@ -120,7 +120,7 @@ namespace ALE_Biggest_Grids_Broadcast {
             return null;
         }
 
-        public abstract List<KeyValuePair<long, List<MyCubeGrid>>> FindGrids(bool connected);
+        public abstract List<KeyValuePair<long, List<MyCubeGrid>>> FindGrids(GridsBroadcastConfig config, bool connected);
 
         public abstract string GetUnitName();
     }

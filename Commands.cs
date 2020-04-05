@@ -67,7 +67,7 @@ namespace ALE_Biggest_Grids_Broadcast {
 
         private List<MyGps> FindGrids(GridDetectionStrategy gridDetectionStrategy, int min, int distance, bool ignoreOffline, long seconds) {
 
-            List<KeyValuePair<long, List<MyCubeGrid>>> grids = gridDetectionStrategy.FindGrids(Plugin.UseConnectedGrids);
+            List<KeyValuePair<long, List<MyCubeGrid>>> grids = gridDetectionStrategy.FindGrids(Plugin.Config, Plugin.UseConnectedGrids);
             List<KeyValuePair<long, List<MyCubeGrid>>> filteredGrids = gridDetectionStrategy.GetFilteredGrids(grids,
                 min, distance, Plugin.TopGrids, ignoreOffline);
 
@@ -193,7 +193,9 @@ namespace ALE_Biggest_Grids_Broadcast {
                 }
             }
 
-            List<KeyValuePair<long, List<MyCubeGrid>>> grids = gridDetectionStrategy.FindGrids(connected);
+            var PluginConfig = Plugin.Config;
+
+            List<KeyValuePair<long, List<MyCubeGrid>>> grids = gridDetectionStrategy.FindGrids(PluginConfig, connected);
             List<KeyValuePair<long, List<MyCubeGrid>>> filteredGrids = gridDetectionStrategy.GetFilteredGrids(grids, min, playerdistance, top, filterOffline);
 
             sb.AppendLine("[Top " + top + " grids by " + gridDetectionStrategy.GetUnitName()+"]");
@@ -205,6 +207,8 @@ namespace ALE_Biggest_Grids_Broadcast {
             sb.AppendLine("Min "+gridDetectionStrategy.GetUnitName()+": "+ min);
             sb.AppendLine("Show Offline: " + !filterOffline);
             sb.AppendLine("Include: "+ (!connected ? "Phyiscal Connections (Rotors, Pistons)" : "Mechanical Connections (Rotors, Pistons, Connectors)"));
+            sb.AppendLine("Center: " + PluginConfig.CenterX + ", " + PluginConfig.CenterY + ", " + PluginConfig.CenterZ);
+
             sb.AppendLine();
 
             sb.AppendLine("Result");

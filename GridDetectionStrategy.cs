@@ -9,7 +9,7 @@ namespace ALE_Biggest_Grids_Broadcast {
 
     interface GridDetectionStrategy {
 
-        List<KeyValuePair<long, List<MyCubeGrid>>> FindGrids(bool connected);
+        List<KeyValuePair<long, List<MyCubeGrid>>> FindGrids(GridsBroadcastConfig config, bool connected);
 
         List<KeyValuePair<long, List<MyCubeGrid>>> GetFilteredGrids(
         List<KeyValuePair<long, List<MyCubeGrid>>> sortedGrids,
