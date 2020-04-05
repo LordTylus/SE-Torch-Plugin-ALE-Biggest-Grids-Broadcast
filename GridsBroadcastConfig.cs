@@ -30,6 +30,8 @@ namespace ALE_Biggest_Grids_Broadcast {
         private double _centerY = 0;
         private double _centerZ = 0;
 
+        private bool _ignoreNpcs = false;
+
         public int TopGrids { get => _topGrids; set => SetValue(ref _topGrids, value); }
         public bool UseConnectedGrids { get => _useConnectedGrids; set => SetValue(ref _useConnectedGrids, value); }
 
@@ -51,5 +53,7 @@ namespace ALE_Biggest_Grids_Broadcast {
         public double CenterX { get => _centerX; set => SetValue(ref _centerX, value); }
         public double CenterY { get => _centerY; set => SetValue(ref _centerY, value); }
         public double CenterZ { get => _centerZ; set => SetValue(ref _centerZ, value); }
+
+        public bool IgnoreNPCs { get => _ignoreNpcs; set => SetValue(ref _ignoreNpcs, value); }
     }
 }

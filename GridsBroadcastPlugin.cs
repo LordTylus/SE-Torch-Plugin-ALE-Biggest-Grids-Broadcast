@@ -34,6 +34,7 @@ namespace ALE_Biggest_Grids_Broadcast
 
         public int TopGrids { get { return Config.TopGrids; } }
         public bool UseConnectedGrids { get { return Config.UseConnectedGrids; } }
+        public bool IgnoreNPCs { get { return Config.IgnoreNPCs; } }
         public int MaxDistancePlayersBiggest { get { return Config.MaxDistancePlayersBiggest; } }
         public int MaxDistancePlayersFurthest { get { return Config.MaxDistancePlayersFurthest; } }
         public int MinDistance { get { return Config.MinDistance; } }

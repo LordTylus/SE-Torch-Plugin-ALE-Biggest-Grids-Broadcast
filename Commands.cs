@@ -56,20 +56,20 @@ namespace ALE_Biggest_Grids_Broadcast {
             long seconds = GetTimeMs();
 
             if (biggest)
-                gpsSet.UnionWith(FindGrids(BiggestGridDetectionStrategy.INSTANCE, Plugin.MinPCU, Plugin.MaxDistancePlayersBiggest, Plugin.IgnoreOfflineBiggest, seconds));
+                gpsSet.UnionWith(FindGrids(BiggestGridDetectionStrategy.INSTANCE, Plugin.MinPCU, Plugin.MaxDistancePlayersBiggest, Plugin.IgnoreOfflineBiggest, Plugin.IgnoreNPCs, seconds));
 
             if(furthest)
-                gpsSet.UnionWith(FindGrids(FurthestGridDetectionStrategy.INSTANCE, Plugin.MinDistance, Plugin.MaxDistancePlayersFurthest, Plugin.IgnoreOfflineFurthest, seconds));
+                gpsSet.UnionWith(FindGrids(FurthestGridDetectionStrategy.INSTANCE, Plugin.MinDistance, Plugin.MaxDistancePlayersFurthest, Plugin.IgnoreOfflineFurthest, Plugin.IgnoreNPCs, seconds));
 
             if (gpsSet.Count > 0)
                 SendGps(gpsSet);
         }
 
-        private List<MyGps> FindGrids(GridDetectionStrategy gridDetectionStrategy, int min, int distance, bool ignoreOffline, long seconds) {
+        private List<MyGps> FindGrids(GridDetectionStrategy gridDetectionStrategy, int min, int distance, bool ignoreOffline, bool ignoreNpcs, long seconds) {
 
             List<KeyValuePair<long, List<MyCubeGrid>>> grids = gridDetectionStrategy.FindGrids(Plugin.Config, Plugin.UseConnectedGrids);
             List<KeyValuePair<long, List<MyCubeGrid>>> filteredGrids = gridDetectionStrategy.GetFilteredGrids(grids,
-                min, distance, Plugin.TopGrids, ignoreOffline);
+                min, distance, Plugin.TopGrids, ignoreOffline, ignoreNpcs);
 
             List<MyGps> gpsList = new List<MyGps>();
 
@@ -158,6 +158,7 @@ namespace ALE_Biggest_Grids_Broadcast {
             bool connected = Plugin.UseConnectedGrids;
             bool filterOffline = ignoreOffline;
             bool gps = false;
+            bool ignoreNpcs = Plugin.IgnoreNPCs;
 
             List<string> args = Context.Args;
             foreach(string arg in args) {
@@ -191,12 +192,18 @@ namespace ALE_Biggest_Grids_Broadcast {
                     string localArg = arg.Replace("-playerdistance=", "");
                     int.TryParse(localArg, out playerdistance);
                 }
+
+                if (arg.StartsWith("-ignoreNpcs=")) {
+
+                    string localArg = arg.Replace("-ignoreNpcs=", "");
+                    bool.TryParse(localArg, out ignoreNpcs);
+                }
             }
 
             var PluginConfig = Plugin.Config;
 
             List<KeyValuePair<long, List<MyCubeGrid>>> grids = gridDetectionStrategy.FindGrids(PluginConfig, connected);
-            List<KeyValuePair<long, List<MyCubeGrid>>> filteredGrids = gridDetectionStrategy.GetFilteredGrids(grids, min, playerdistance, top, filterOffline);
+            List<KeyValuePair<long, List<MyCubeGrid>>> filteredGrids = gridDetectionStrategy.GetFilteredGrids(grids, min, playerdistance, top, filterOffline, ignoreNpcs);
 
             sb.AppendLine("[Top " + top + " grids by " + gridDetectionStrategy.GetUnitName()+"]");
             sb.AppendLine();
@@ -206,6 +213,7 @@ namespace ALE_Biggest_Grids_Broadcast {
             sb.AppendLine("Player distance: " + playerdistance);
             sb.AppendLine("Min "+gridDetectionStrategy.GetUnitName()+": "+ min);
             sb.AppendLine("Show Offline: " + !filterOffline);
+            sb.AppendLine("Show NPCs: " + !ignoreNpcs);
             sb.AppendLine("Include: "+ (!connected ? "Phyiscal Connections (Rotors, Pistons)" : "Mechanical Connections (Rotors, Pistons, Connectors)"));
             sb.AppendLine("Center: " + PluginConfig.CenterX + ", " + PluginConfig.CenterY + ", " + PluginConfig.CenterZ);
 

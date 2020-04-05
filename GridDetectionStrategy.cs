@@ -13,7 +13,8 @@ namespace ALE_Biggest_Grids_Broadcast {
 
         List<KeyValuePair<long, List<MyCubeGrid>>> GetFilteredGrids(
         List<KeyValuePair<long, List<MyCubeGrid>>> sortedGrids,
-        int min, int playerdistance, int top, bool filterOffline);
+        int min, int playerdistance, int top, bool filterOffline,
+        bool ignoreNpcs);
 
         string GetUnitName();
     }

@@ -9,7 +9,7 @@ namespace ALE_Biggest_Grids_Broadcast {
 
         public List<KeyValuePair<long, List<MyCubeGrid>>> GetFilteredGrids(
             List<KeyValuePair<long, List<MyCubeGrid>>> sortedGrids, int min,
-            int playerdistance, int top, bool filterOffline) {
+            int playerdistance, int top, bool filterOffline, bool ignoreNpcs) {
 
             List<KeyValuePair<long, List<MyCubeGrid>>> gridsList = new List<KeyValuePair<long, List<MyCubeGrid>>>();
 
@@ -22,7 +22,7 @@ namespace ALE_Biggest_Grids_Broadcast {
                 if (pair.Key < min)
                     continue;
 
-                bool relevant = CheckIfGridsAreRelevant(pair.Value, playerdistance, filterOffline);
+                bool relevant = CheckIfGridsAreRelevant(pair.Value, playerdistance, filterOffline, ignoreNpcs);
 
                 if (relevant)
                     gridsList.Add(pair);
@@ -34,7 +34,7 @@ namespace ALE_Biggest_Grids_Broadcast {
             return gridsList;
         }
 
-        public bool CheckIfGridsAreRelevant(List<MyCubeGrid> grids, int distance, bool filterOffline) {
+        public bool CheckIfGridsAreRelevant(List<MyCubeGrid> grids, int distance, bool filterOffline, bool ignoreNpcs) {
 
             foreach (MyCubeGrid grid in grids) {
 
@@ -48,6 +48,9 @@ namespace ALE_Biggest_Grids_Broadcast {
                     gridOwner = gridOwnerList[1];
 
                 if (gridOwner == 0)
+                    continue;
+
+                if (ignoreNpcs && MySession.Static.Players.IdentityIsNpc(gridOwner))
                     continue;
 
                 MyFaction faction = MySession.Static.Factions.GetPlayerFaction(gridOwner);
