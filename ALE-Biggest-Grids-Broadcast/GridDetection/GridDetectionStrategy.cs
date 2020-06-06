@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ALE_Biggest_Grids_Broadcast {
+namespace ALE_Biggest_Grids_Broadcast.GridDetection {
 
     interface GridDetectionStrategy {
 

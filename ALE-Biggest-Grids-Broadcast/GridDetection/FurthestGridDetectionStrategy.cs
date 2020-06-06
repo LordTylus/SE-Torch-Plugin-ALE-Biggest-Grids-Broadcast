@@ -5,7 +5,7 @@ using VRage.Collections;
 using VRage.Groups;
 using VRageMath;
 
-namespace ALE_Biggest_Grids_Broadcast {
+namespace ALE_Biggest_Grids_Broadcast.GridDetection {
     class FurthestGridDetectionStrategy : AbstractGridDetectionStrategy {
 
         public static readonly FurthestGridDetectionStrategy INSTANCE = new FurthestGridDetectionStrategy();

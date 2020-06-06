@@ -3,7 +3,7 @@ using Sandbox.Game.World;
 using System.Collections.Generic;
 using VRageMath;
 
-namespace ALE_Biggest_Grids_Broadcast {
+namespace ALE_Biggest_Grids_Broadcast.GridDetection {
 
     abstract class AbstractGridDetectionStrategy : GridDetectionStrategy {
 

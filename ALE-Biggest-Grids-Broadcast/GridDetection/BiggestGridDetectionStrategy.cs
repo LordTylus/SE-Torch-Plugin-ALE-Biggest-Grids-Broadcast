@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using VRage.Collections;
 using VRage.Groups;
 
-namespace ALE_Biggest_Grids_Broadcast {
+namespace ALE_Biggest_Grids_Broadcast.GridDetection {
     internal class BiggestGridDetectionStrategy : AbstractGridDetectionStrategy {
 
         public static readonly BiggestGridDetectionStrategy INSTANCE = new BiggestGridDetectionStrategy();

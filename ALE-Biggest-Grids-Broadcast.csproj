@@ -141,10 +141,10 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ALE-Biggest-Grids-Broadcast\AbstractGridDetectionStrategy.cs" />
-    <Compile Include="ALE-Biggest-Grids-Broadcast\BiggestGridDetectionStrategy.cs" />
-    <Compile Include="ALE-Biggest-Grids-Broadcast\FurthestGridDetectionStrategy.cs" />
-    <Compile Include="ALE-Biggest-Grids-Broadcast\GridDetectionStrategy.cs" />
+    <Compile Include="ALE-Biggest-Grids-Broadcast\GridDetection\AbstractGridDetectionStrategy.cs" />
+    <Compile Include="ALE-Biggest-Grids-Broadcast\GridDetection\BiggestGridDetectionStrategy.cs" />
+    <Compile Include="ALE-Biggest-Grids-Broadcast\GridDetection\FurthestGridDetectionStrategy.cs" />
+    <Compile Include="ALE-Biggest-Grids-Broadcast\GridDetection\GridDetectionStrategy.cs" />
     <Compile Include="ALE-Biggest-Grids-Broadcast\GridsBroadcastPlugin.cs" />
     <Compile Include="ALE-Biggest-Grids-Broadcast\Commands.cs" />
     <Compile Include="ALE-Biggest-Grids-Broadcast\GridsBroadcastConfig.cs" />
