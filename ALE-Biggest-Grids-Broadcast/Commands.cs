@@ -1,4 +1,5 @@
 ﻿using ALE_Biggest_Grids_Broadcast.GridDetection;
+using ALE_Core.Utils;
 using NLog;
 using Sandbox.Game;
 using Sandbox.Game.Entities;
@@ -27,7 +28,7 @@ namespace ALE_Biggest_Grids_Broadcast {
         [Permission(MyPromoteLevel.Admin)]
         public void SendBiggestGrids() {
 
-            SendGridsInternal(true, false);
+            SendGridsInternal(true, false, false);
 
             Context.Respond("Biggest grid GPS added!");
         }
@@ -36,21 +37,30 @@ namespace ALE_Biggest_Grids_Broadcast {
         [Permission(MyPromoteLevel.Admin)]
         public void SendFurthestGrids() {
 
-            SendGridsInternal(false, true);
+            SendGridsInternal(false, true, false);
 
             Context.Respond("Furthest grid GPS added!");
         }
 
+        [Command("sendabandonedgps", "Sends Abandoned Grids to all Players!")]
+        [Permission(MyPromoteLevel.Admin)]
+        public void SendAbendonedGrids() {
+
+            SendGridsInternal(false, false, true);
+
+            Context.Respond("Abandoned grid GPS added!");
+        }
+
         [Command("sendmixgps", "Sends Top X defined Grids from center to all Players!")]
         [Permission(MyPromoteLevel.Admin)]
-        public void SendGrids(bool biggest, bool furthest) {
+        public void SendGrids(bool biggest, bool furthest, bool abandoned) {
 
-            SendGridsInternal(biggest, furthest);
+            SendGridsInternal(biggest, furthest, abandoned);
 
             Context.Respond("Defined grid GPS added!");
         }
 
-        private void SendGridsInternal(bool biggest, bool furthest) {
+        private void SendGridsInternal(bool biggest, bool furthest, bool abandoned) {
 
             Plugin.RemoveGpsFromAllPlayers();
 
@@ -63,11 +73,14 @@ namespace ALE_Biggest_Grids_Broadcast {
             if(furthest)
                 gpsSet.UnionWith(FindGrids(FurthestGridDetectionStrategy.INSTANCE, Plugin.MinDistance, Plugin.MaxDistancePlayersFurthest, Plugin.IgnoreOfflineFurthest, Plugin.IgnoreNPCs, seconds));
 
+            if(abandoned)
+                gpsSet.UnionWith(FindGrids(AbandonedGridDetectionStrategy.INSTANCE, Plugin.MinDays, -1, false, true, seconds));
+
             if (gpsSet.Count > 0)
                 SendGps(gpsSet);
         }
 
-        private List<MyGps> FindGrids(GridDetectionStrategy gridDetectionStrategy, int min, int distance, bool ignoreOffline, bool ignoreNpcs, long seconds) {
+        private List<MyGps> FindGrids(IGridDetectionStrategy gridDetectionStrategy, int min, int distance, bool ignoreOffline, bool ignoreNpcs, long seconds) {
 
             List<KeyValuePair<long, List<MyCubeGrid>>> grids = gridDetectionStrategy.FindGrids(Plugin.Config, Plugin.UseConnectedGrids);
             List<KeyValuePair<long, List<MyCubeGrid>>> filteredGrids = gridDetectionStrategy.GetFilteredGrids(grids,
@@ -120,23 +133,28 @@ namespace ALE_Biggest_Grids_Broadcast {
         [Command("listbiggrids", "Lists the Top X biggest grids (those which would be send to all players)!")]
         [Permission(MyPromoteLevel.Moderator)]
         public void ListBiggestGrids() {
-            ListGridsInternal(true, false);
+            ListGridsInternal(true, false, false);
         }
 
         [Command("listfargrids", "Lists the Top X furthest grids from world center (those which would be send to all players)!")]
         [Permission(MyPromoteLevel.Moderator)]
         public void ListFurthestGrids() {
-            ListGridsInternal(false, true);
+            ListGridsInternal(false, true, false);
         }
 
+        [Command("listabandonedgrids", "Lists the abandoned grids (those which would be send to all players)!")]
+        [Permission(MyPromoteLevel.Moderator)]
+        public void ListAbandonedGrids() {
+            ListGridsInternal(false, false, true);
+        }
 
         [Command("listmixgrids", "Lists the Top X furthest and biggest grids (configurable)!")]
         [Permission(MyPromoteLevel.Moderator)]
-        public void ListFurthestGrids(bool biggest, bool furthest) {
-            ListGridsInternal(biggest, furthest);
+        public void ListFurthestGrids(bool biggest, bool furthest, bool abandoned) {
+            ListGridsInternal(biggest, furthest, abandoned);
         }
 
-        private void ListGridsInternal(bool biggest, bool furthest) {
+        private void ListGridsInternal(bool biggest, bool furthest, bool abandoned) {
 
             StringBuilder sb = new StringBuilder();
             long seconds = GetTimeMs();
@@ -147,13 +165,16 @@ namespace ALE_Biggest_Grids_Broadcast {
             if (furthest)
                 AddGridsToSb(FurthestGridDetectionStrategy.INSTANCE, Plugin.MinDistance, Plugin.MaxDistancePlayersFurthest, Plugin.IgnoreOfflineFurthest, sb, seconds);
 
+            if (abandoned)
+                AddGridsToSb(AbandonedGridDetectionStrategy.INSTANCE, Plugin.MinDays, -1, false, sb, seconds);
+
             if (Context.Player == null) 
                 Context.Respond(sb.ToString());
             else 
                 ModCommunication.SendMessageTo(new DialogMessage("List of Grids", "Top " + Plugin.TopGrids + " grids", sb.ToString()), Context.Player.SteamUserId);
         }
 
-        private void AddGridsToSb(GridDetectionStrategy gridDetectionStrategy, int min, int distance, bool ignoreOffline, StringBuilder sb, long seconds) {
+        private void AddGridsToSb(IGridDetectionStrategy gridDetectionStrategy, int min, int distance, bool ignoreOffline, StringBuilder sb, long seconds) {
 
             int top = Plugin.TopGrids;
             int playerdistance = distance;
@@ -207,17 +228,7 @@ namespace ALE_Biggest_Grids_Broadcast {
             List<KeyValuePair<long, List<MyCubeGrid>>> grids = gridDetectionStrategy.FindGrids(PluginConfig, connected);
             List<KeyValuePair<long, List<MyCubeGrid>>> filteredGrids = gridDetectionStrategy.GetFilteredGrids(grids, min, playerdistance, top, filterOffline, ignoreNpcs);
 
-            sb.AppendLine("[Top " + top + " grids by " + gridDetectionStrategy.GetUnitName()+"]");
-            sb.AppendLine();
-            sb.AppendLine("Used Settings");
-            sb.AppendLine("---------------------------------------");
-            sb.AppendLine("Number of grids: " + top);
-            sb.AppendLine("Player distance: " + playerdistance);
-            sb.AppendLine("Min "+gridDetectionStrategy.GetUnitName()+": "+ min);
-            sb.AppendLine("Show Offline: " + !filterOffline);
-            sb.AppendLine("Show NPCs: " + !ignoreNpcs);
-            sb.AppendLine("Include: "+ (!connected ? "Phyiscal Connections (Rotors, Pistons)" : "Mechanical Connections (Rotors, Pistons, Connectors)"));
-            sb.AppendLine("Center: " + PluginConfig.CenterX + ", " + PluginConfig.CenterY + ", " + PluginConfig.CenterZ);
+            gridDetectionStrategy.WriteSettings(sb, top, playerdistance, min, filterOffline, ignoreNpcs, connected, PluginConfig);
 
             sb.AppendLine();
 
@@ -238,20 +249,7 @@ namespace ALE_Biggest_Grids_Broadcast {
 
                 i++;
 
-                MyCubeGrid biggestGrid = null;
-                double num = 0;
-
-                foreach (MyCubeGrid cubeGrid in pair.Value) {
-
-                    if (cubeGrid.Physics == null)
-                        continue;
-
-                    double volume = cubeGrid.PositionComp.WorldAABB.Size.Volume;
-                    if (volume > num) {
-                        num = volume;
-                        biggestGrid = cubeGrid;
-                    }
-                }
+                MyCubeGrid biggestGrid = GridUtils.GetBiggestGridInGroup(pair.Value);
 
                 var gridOwnerList = biggestGrid.BigOwners;
                 var ownerCnt = gridOwnerList.Count;

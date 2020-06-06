@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 using Sandbox.Game.Entities;
 using VRage.Collections;
 using VRage.Groups;
@@ -88,6 +89,21 @@ namespace ALE_Biggest_Grids_Broadcast.GridDetection {
             }
 
             return new KeyValuePair<long, List<MyCubeGrid>>((long) Math.Sqrt(distance), gridsList);
+        }
+
+        public override void WriteSettings(StringBuilder sb, int top, int playerdistance, int min, bool filterOffline, bool ignoreNpcs, bool connected, GridsBroadcastConfig pluginConfig) {
+
+            sb.AppendLine("[Top " + top + " grids by " + GetUnitName() + "]");
+            sb.AppendLine();
+            sb.AppendLine("Used Settings");
+            sb.AppendLine("---------------------------------------");
+            sb.AppendLine("Number of grids: " + top);
+            sb.AppendLine("Player distance: " + playerdistance);
+            sb.AppendLine("Min " + GetUnitName() + ": " + min);
+            sb.AppendLine("Show Offline: " + !filterOffline);
+            sb.AppendLine("Show NPCs: " + !ignoreNpcs);
+            sb.AppendLine("Include: " + (!connected ? "Phyiscal Connections (Rotors, Pistons)" : "Mechanical Connections (Rotors, Pistons, Connectors)"));
+            sb.AppendLine("Center: " + pluginConfig.CenterX + ", " + pluginConfig.CenterY + ", " + pluginConfig.CenterZ);
         }
     }
 }

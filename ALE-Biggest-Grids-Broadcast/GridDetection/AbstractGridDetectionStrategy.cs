@@ -1,13 +1,14 @@
 ﻿using Sandbox.Game.Entities;
 using Sandbox.Game.World;
 using System.Collections.Generic;
+using System.Text;
 using VRageMath;
 
 namespace ALE_Biggest_Grids_Broadcast.GridDetection {
 
-    abstract class AbstractGridDetectionStrategy : GridDetectionStrategy {
+    abstract class AbstractGridDetectionStrategy : IGridDetectionStrategy {
 
-        public List<KeyValuePair<long, List<MyCubeGrid>>> GetFilteredGrids(
+        public virtual List<KeyValuePair<long, List<MyCubeGrid>>> GetFilteredGrids(
             List<KeyValuePair<long, List<MyCubeGrid>>> sortedGrids, int min,
             int playerdistance, int top, bool filterOffline, bool ignoreNpcs) {
 
@@ -34,7 +35,7 @@ namespace ALE_Biggest_Grids_Broadcast.GridDetection {
             return gridsList;
         }
 
-        public bool CheckIfGridsAreRelevant(List<MyCubeGrid> grids, int distance, bool filterOffline, bool ignoreNpcs) {
+        public virtual bool CheckIfGridsAreRelevant(List<MyCubeGrid> grids, int distance, bool filterOffline, bool ignoreNpcs) {
 
             foreach (MyCubeGrid grid in grids) {
 
@@ -124,6 +125,8 @@ namespace ALE_Biggest_Grids_Broadcast.GridDetection {
         }
 
         public abstract List<KeyValuePair<long, List<MyCubeGrid>>> FindGrids(GridsBroadcastConfig config, bool connected);
+
+        public abstract void WriteSettings(StringBuilder sb, int top, int playerdistance, int min, bool filterOffline, bool ignoreNpcs, bool connected, GridsBroadcastConfig pluginConfig);
 
         public abstract string GetUnitName();
     }

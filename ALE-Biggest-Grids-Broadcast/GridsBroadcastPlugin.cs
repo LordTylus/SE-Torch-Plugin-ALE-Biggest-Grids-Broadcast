@@ -43,6 +43,7 @@ namespace ALE_Biggest_Grids_Broadcast
         public int MinPCU { get { return Config.MinPCU; } }
         public bool RemoveGpsOnJoin { get { return Config.RemoveGpsOnJoin; } }
         public string GpsIdentifierName { get { return Config.GpsIdentifierName; } }
+        public int MinDays { get { return Config.MinDays; } }
 
         public Color GpsColor {
 

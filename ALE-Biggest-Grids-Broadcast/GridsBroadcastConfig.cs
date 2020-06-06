@@ -32,6 +32,9 @@ namespace ALE_Biggest_Grids_Broadcast {
 
         private bool _ignoreNpcs = false;
 
+        private int _minDays = 10;
+        private bool _minDaysFactionCheck = false;
+
         public int TopGrids { get => _topGrids; set => SetValue(ref _topGrids, value); }
         public bool UseConnectedGrids { get => _useConnectedGrids; set => SetValue(ref _useConnectedGrids, value); }
 
@@ -55,5 +58,9 @@ namespace ALE_Biggest_Grids_Broadcast {
         public double CenterZ { get => _centerZ; set => SetValue(ref _centerZ, value); }
 
         public bool IgnoreNPCs { get => _ignoreNpcs; set => SetValue(ref _ignoreNpcs, value); }
+
+        public int MinDays { get => _minDays; set => SetValue(ref _minDays, value); }
+        public bool MinDaysFactionCheck { get => _minDaysFactionCheck; set => SetValue(ref _minDaysFactionCheck, value); }
+        
     }
 }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ALE_Biggest_Grids_Broadcast.GridDetection {
 
-    interface GridDetectionStrategy {
+    interface IGridDetectionStrategy {
 
         List<KeyValuePair<long, List<MyCubeGrid>>> FindGrids(GridsBroadcastConfig config, bool connected);
 
@@ -17,5 +17,7 @@ namespace ALE_Biggest_Grids_Broadcast.GridDetection {
         bool ignoreNpcs);
 
         string GetUnitName();
+
+        void WriteSettings(StringBuilder sb, int top, int playerdistance, int min, bool filterOffline, bool ignoreNpcs, bool connected, GridsBroadcastConfig pluginConfig);
     }
 }
