@@ -27,13 +27,23 @@ namespace ALE_Biggest_Grids_Broadcast.GridDetection {
 
             if (connected) {
 
-                foreach (var group in MyCubeGridGroups.Static.Physical.Groups)
-                    gridsList.Add(CheckGroupsDistance(origin, group.Nodes));
+                foreach (var group in MyCubeGridGroups.Static.Physical.Groups) {
+
+                    var grids = CheckGroupsDistance(origin, group.Nodes, config);
+
+                    if (grids.Value.Count > 0)
+                        gridsList.Add(grids);
+                }
 
             } else {
 
-                foreach (var group in MyCubeGridGroups.Static.Mechanical.Groups)
-                    gridsList.Add(CheckGroupsDistance(origin, group.Nodes));
+                foreach (var group in MyCubeGridGroups.Static.Mechanical.Groups) {
+
+                    var grids = CheckGroupsDistance(origin, group.Nodes, config);
+
+                    if (grids.Value.Count > 0)
+                        gridsList.Add(grids);
+                }
             }
 
             gridsList.Sort(delegate (KeyValuePair<long, List<MyCubeGrid>> pair1, KeyValuePair<long, List<MyCubeGrid>> pair2) {
@@ -43,7 +53,7 @@ namespace ALE_Biggest_Grids_Broadcast.GridDetection {
             return gridsList;
         }
 
-        private KeyValuePair<long, List<MyCubeGrid>> CheckGroupsDistance(Vector3D origin, HashSetReader<MyGroups<MyCubeGrid, MyGridMechanicalGroupData>.Node> nodes) {
+        private KeyValuePair<long, List<MyCubeGrid>> CheckGroupsDistance(Vector3D origin, HashSetReader<MyGroups<MyCubeGrid, MyGridMechanicalGroupData>.Node> nodes, GridsBroadcastConfig config) {
 
             List<MyCubeGrid> gridsList = new List<MyCubeGrid>();
             double distance = 0;
@@ -53,6 +63,9 @@ namespace ALE_Biggest_Grids_Broadcast.GridDetection {
                 MyCubeGrid cubeGrid = groupNodes.NodeData;
 
                 if (cubeGrid.Physics == null)
+                    continue;
+
+                if (!IsGridInsideFilter(cubeGrid, config))
                     continue;
 
                 gridsList.Add(cubeGrid);
@@ -67,7 +80,7 @@ namespace ALE_Biggest_Grids_Broadcast.GridDetection {
             return new KeyValuePair<long, List<MyCubeGrid>>((long) Math.Sqrt(distance), gridsList);
         }
 
-        private KeyValuePair<long, List<MyCubeGrid>> CheckGroupsDistance(Vector3D origin, HashSetReader<MyGroups<MyCubeGrid, MyGridPhysicalGroupData>.Node> nodes) {
+        private KeyValuePair<long, List<MyCubeGrid>> CheckGroupsDistance(Vector3D origin, HashSetReader<MyGroups<MyCubeGrid, MyGridPhysicalGroupData>.Node> nodes, GridsBroadcastConfig config) {
 
             List<MyCubeGrid> gridsList = new List<MyCubeGrid>();
             double distance = 0;
@@ -77,6 +90,9 @@ namespace ALE_Biggest_Grids_Broadcast.GridDetection {
                 MyCubeGrid cubeGrid = groupNodes.NodeData;
 
                 if (cubeGrid.Physics == null)
+                    continue;
+
+                if (!IsGridInsideFilter(cubeGrid, config))
                     continue;
 
                 gridsList.Add(cubeGrid);

@@ -2,6 +2,7 @@
 using Sandbox.Game.World;
 using System.Collections.Generic;
 using System.Text;
+using VRage.Game;
 using VRageMath;
 
 namespace ALE_Biggest_Grids_Broadcast.GridDetection {
@@ -122,6 +123,23 @@ namespace ALE_Biggest_Grids_Broadcast.GridDetection {
                     return player;
 
             return null;
+        }
+
+        public static bool IsGridInsideFilter(MyCubeGrid grid, GridsBroadcastConfig config) {
+
+            if (grid.IsStatic && !config.SendStations)
+                return false;
+
+            if (!grid.IsStatic && !config.SendShips)
+                return false;
+
+            if (grid.GridSizeEnum == MyCubeSize.Large && !config.SendLargeGrids)
+                return false;
+
+            if (grid.GridSizeEnum == MyCubeSize.Small && !config.SendSmallGrids)
+                return false;
+
+            return true;
         }
 
         public abstract List<KeyValuePair<long, List<MyCubeGrid>>> FindGrids(GridsBroadcastConfig config, bool connected);

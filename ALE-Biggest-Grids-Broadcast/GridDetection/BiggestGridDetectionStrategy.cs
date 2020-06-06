@@ -23,13 +23,23 @@ namespace ALE_Biggest_Grids_Broadcast.GridDetection {
 
             if (connected) {
 
-                foreach (var group in MyCubeGridGroups.Static.Physical.Groups)
-                    gridsList.Add(CheckGroupsPcu(group.Nodes));
+                foreach (var group in MyCubeGridGroups.Static.Physical.Groups) {
+
+                    var grids = CheckGroupsPcu(group.Nodes, config);
+
+                    if(grids.Value.Count > 0)
+                        gridsList.Add(grids);
+                }
 
             } else {
 
-                foreach (var group in MyCubeGridGroups.Static.Mechanical.Groups)
-                    gridsList.Add(CheckGroupsPcu(group.Nodes));
+                foreach (var group in MyCubeGridGroups.Static.Mechanical.Groups) {
+
+                    var grids = CheckGroupsPcu(group.Nodes, config);
+
+                    if (grids.Value.Count > 0)
+                        gridsList.Add(grids);
+                }
             }
 
             gridsList.Sort(delegate (KeyValuePair<long, List<MyCubeGrid>> pair1, KeyValuePair<long, List<MyCubeGrid>> pair2) {
@@ -39,7 +49,7 @@ namespace ALE_Biggest_Grids_Broadcast.GridDetection {
             return gridsList;
         }
 
-        private KeyValuePair<long, List<MyCubeGrid>> CheckGroupsPcu(HashSetReader<MyGroups<MyCubeGrid, MyGridMechanicalGroupData>.Node> nodes) {
+        private KeyValuePair<long, List<MyCubeGrid>> CheckGroupsPcu(HashSetReader<MyGroups<MyCubeGrid, MyGridMechanicalGroupData>.Node> nodes, GridsBroadcastConfig config) {
 
             List<MyCubeGrid> gridsList = new List<MyCubeGrid>();
             long pcu = 0;
@@ -51,6 +61,9 @@ namespace ALE_Biggest_Grids_Broadcast.GridDetection {
                 if (cubeGrid.Physics == null)
                     continue;
 
+                if (!IsGridInsideFilter(cubeGrid, config))
+                    continue;
+
                 gridsList.Add(cubeGrid);
 
                 pcu += cubeGrid.BlocksPCU;
@@ -59,7 +72,7 @@ namespace ALE_Biggest_Grids_Broadcast.GridDetection {
             return new KeyValuePair<long, List<MyCubeGrid>>(pcu, gridsList);
         }
 
-        private KeyValuePair<long, List<MyCubeGrid>> CheckGroupsPcu(HashSetReader<MyGroups<MyCubeGrid, MyGridPhysicalGroupData>.Node> nodes) {
+        private KeyValuePair<long, List<MyCubeGrid>> CheckGroupsPcu(HashSetReader<MyGroups<MyCubeGrid, MyGridPhysicalGroupData>.Node> nodes, GridsBroadcastConfig config) {
 
             List<MyCubeGrid> gridsList = new List<MyCubeGrid>();
             long pcu = 0;
@@ -69,6 +82,9 @@ namespace ALE_Biggest_Grids_Broadcast.GridDetection {
                 MyCubeGrid cubeGrid = groupNodes.NodeData;
 
                 if (cubeGrid.Physics == null)
+                    continue;
+
+                if (!IsGridInsideFilter(cubeGrid, config))
                     continue;
 
                 gridsList.Add(cubeGrid);

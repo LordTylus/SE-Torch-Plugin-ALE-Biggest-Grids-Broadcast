@@ -35,6 +35,11 @@ namespace ALE_Biggest_Grids_Broadcast {
         private int _minDays = 10;
         private bool _minDaysFactionCheck = false;
 
+        private bool _sendShips = true;
+        private bool _sendStations = true;
+        private bool _sendLargeGrids = true;
+        private bool _sendSmallGrids = true;
+
         public int TopGrids { get => _topGrids; set => SetValue(ref _topGrids, value); }
         public bool UseConnectedGrids { get => _useConnectedGrids; set => SetValue(ref _useConnectedGrids, value); }
 
@@ -61,6 +66,11 @@ namespace ALE_Biggest_Grids_Broadcast {
 
         public int MinDays { get => _minDays; set => SetValue(ref _minDays, value); }
         public bool MinDaysFactionCheck { get => _minDaysFactionCheck; set => SetValue(ref _minDaysFactionCheck, value); }
-        
+
+        public bool SendShips { get => _sendShips; set => SetValue(ref _sendShips, value); }
+        public bool SendStations { get => _sendStations; set => SetValue(ref _sendStations, value); }
+        public bool SendLargeGrids { get => _sendLargeGrids; set => SetValue(ref _sendLargeGrids, value); }
+        public bool SendSmallGrids { get => _sendSmallGrids; set => SetValue(ref _sendSmallGrids, value); }
+
     }
 }
