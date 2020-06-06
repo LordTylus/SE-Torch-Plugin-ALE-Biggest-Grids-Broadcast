@@ -53,7 +53,7 @@ namespace ALE_Biggest_Grids_Broadcast {
 
         [Command("sendmixgps", "Sends Top X defined Grids from center to all Players!")]
         [Permission(MyPromoteLevel.Admin)]
-        public void SendGrids(bool biggest, bool furthest, bool abandoned) {
+        public void SendGrids(bool biggest, bool furthest, bool abandoned = false) {
 
             SendGridsInternal(biggest, furthest, abandoned);
 
@@ -150,7 +150,7 @@ namespace ALE_Biggest_Grids_Broadcast {
 
         [Command("listmixgrids", "Lists the Top X furthest and biggest grids (configurable)!")]
         [Permission(MyPromoteLevel.Moderator)]
-        public void ListFurthestGrids(bool biggest, bool furthest, bool abandoned) {
+        public void ListFurthestGrids(bool biggest, bool furthest, bool abandoned = false) {
             ListGridsInternal(biggest, furthest, abandoned);
         }
 
