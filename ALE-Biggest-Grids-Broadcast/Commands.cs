@@ -3,7 +3,6 @@ using ALE_Core.Utils;
 using NLog;
 using Sandbox.Game;
 using Sandbox.Game.Entities;
-using Sandbox.Game.Multiplayer;
 using Sandbox.Game.Screens.Helpers;
 using Sandbox.Game.World;
 using Sandbox.ModAPI;
@@ -78,7 +77,7 @@ namespace ALE_Biggest_Grids_Broadcast {
                 gpsSet.UnionWith(FindGrids(AbandonedGridDetectionStrategy.INSTANCE, Plugin.MinDays, -1, false, true, seconds));
 
             if (gpsSet.Count > 0)
-                SendGps(gpsSet, Plugin.Config);
+                SendGps(gpsSet);
         }
 
         private List<MyGps> FindGrids(IGridDetectionStrategy gridDetectionStrategy, int min, int distance, bool ignoreOffline, bool ignoreNpcs, long seconds) {
@@ -109,28 +108,11 @@ namespace ALE_Biggest_Grids_Broadcast {
             return gpsList;
         }
 
-        private void SendGps(HashSet<MyGps> gpsSet, GridsBroadcastConfig config) {
+        private void SendGps(HashSet<MyGps> gpsSet) {
 
-            MyGpsCollection gpsCollection = (MyGpsCollection)MyAPIGateway.Session?.GPS;
-
-            if (gpsCollection == null)
-                return;
-
-            bool followGrids = config.GpsFollowGrids;
-            bool playSound = config.PlayGpsSound;
-
-            foreach (MyPlayer player in MySession.Static.Players.GetOnlinePlayers()) {
-                foreach (MyGps gps in gpsSet) {
-
-                    MyGps gpsRef = gps;
-
-                    long entityId = 0L;
-                    if (followGrids)
-                        entityId = gps.EntityId;
-
-                    gpsCollection.SendAddGps(player.Identity.IdentityId, ref gpsRef, entityId, playSound);
-                }
-            }
+            foreach (MyPlayer player in MySession.Static.Players.GetOnlinePlayers())
+                foreach (MyGps gps in gpsSet)
+                    MyAPIGateway.Session?.GPS.AddGps(player.Identity.IdentityId, gps);
         }
 
         [Command("removebiggps", "obsolete use !removegps instead")]
@@ -324,7 +306,6 @@ namespace ALE_Biggest_Grids_Broadcast {
                 DiscardAt = new TimeSpan?()
             };
             gps.UpdateHash();
-            gps.SetEntityId(grid.EntityId);
 
             return gps;
         }

@@ -40,9 +40,6 @@ namespace ALE_Biggest_Grids_Broadcast {
         private bool _sendLargeGrids = true;
         private bool _sendSmallGrids = true;
 
-        private bool _playGpsSound = true;
-        private bool _gpsFollowGrids = false;
-
         public int TopGrids { get => _topGrids; set => SetValue(ref _topGrids, value); }
         public bool UseConnectedGrids { get => _useConnectedGrids; set => SetValue(ref _useConnectedGrids, value); }
 
@@ -75,7 +72,5 @@ namespace ALE_Biggest_Grids_Broadcast {
         public bool SendLargeGrids { get => _sendLargeGrids; set => SetValue(ref _sendLargeGrids, value); }
         public bool SendSmallGrids { get => _sendSmallGrids; set => SetValue(ref _sendSmallGrids, value); }
 
-        public bool PlayGpsSound { get => _playGpsSound; set => SetValue(ref _playGpsSound, value); }
-        public bool GpsFollowGrids { get => _gpsFollowGrids; set => SetValue(ref _gpsFollowGrids, value); }
     }
 }
