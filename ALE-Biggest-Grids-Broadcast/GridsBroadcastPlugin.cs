@@ -40,7 +40,7 @@ namespace ALE_Biggest_Grids_Broadcast
         public int MaxDistancePlayersFurthest { get { return Config.MaxDistancePlayersFurthest; } }
         public int MinDistance { get { return Config.MinDistance; } }
         public bool IgnoreOfflineBiggest { get { return !Config.ShowOfflineBiggest; } }
-        public bool IgnoreOfflineBiggestBlocks { get { return !Config.ShowOfflineBiggest; } }
+        public bool IgnoreOfflineBiggestBlocks { get { return !Config.ShowOfflineBiggestBlocks; } }
         public bool IgnoreOfflineFurthest { get { return !Config.ShowOfflineFurthest; } }
         public int MinPCU { get { return Config.MinPCU; } }
         public int MinBlocks { get { return Config.MinBlocks; } }

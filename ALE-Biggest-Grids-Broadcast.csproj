@@ -143,6 +143,7 @@
   <ItemGroup>
     <Compile Include="ALE-Biggest-Grids-Broadcast\GridDetection\AbstractGridDetectionStrategy.cs" />
     <Compile Include="ALE-Biggest-Grids-Broadcast\GridDetection\AbandonedGridDetectionStrategy.cs" />
+    <Compile Include="ALE-Biggest-Grids-Broadcast\GridDetection\BiggestGridDetectionBlocksStrategy.cs" />
     <Compile Include="ALE-Biggest-Grids-Broadcast\GridDetection\BiggestGridDetectionPcuStrategy.cs" />
     <Compile Include="ALE-Biggest-Grids-Broadcast\GridDetection\FurthestGridDetectionStrategy.cs" />
     <Compile Include="ALE-Biggest-Grids-Broadcast\GridDetection\GridDetectionStrategy.cs" />

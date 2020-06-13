@@ -25,11 +25,11 @@ namespace ALE_Biggest_Grids_Broadcast {
 
         public GridsBroadcastPlugin Plugin => (GridsBroadcastPlugin) Context.Plugin;
 
-        [Command("sendbiggps", "Sends Top X biggest Grids to all Players!")]
+        [Command("sendbiggps", "Sends Top X biggest Grids by PCU to all Players!")]
         [Permission(MyPromoteLevel.Admin)]
         public void SendBiggestGrids() {
 
-            SendGridsInternal(true, false, false);
+            SendGridsInternal(true, false, false, false);
 
             Context.Respond("Biggest grid GPS added!");
         }
@@ -38,7 +38,7 @@ namespace ALE_Biggest_Grids_Broadcast {
         [Permission(MyPromoteLevel.Admin)]
         public void SendFurthestGrids() {
 
-            SendGridsInternal(false, true, false);
+            SendGridsInternal(false, true, false, false);
 
             Context.Respond("Furthest grid GPS added!");
         }
@@ -47,21 +47,30 @@ namespace ALE_Biggest_Grids_Broadcast {
         [Permission(MyPromoteLevel.Admin)]
         public void SendAbendonedGrids() {
 
-            SendGridsInternal(false, false, true);
+            SendGridsInternal(false, false, true, false);
 
             Context.Respond("Abandoned grid GPS added!");
         }
 
+        [Command("sendbigblockgps", "Sends Top X biggest Grids by blocks to all Players!")]
+        [Permission(MyPromoteLevel.Admin)]
+        public void SendBiggestBlockGrids() {
+
+            SendGridsInternal(false, false, false, true);
+
+            Context.Respond("Biggest grid GPS added!");
+        }
+
         [Command("sendmixgps", "Sends Top X defined Grids from center to all Players!")]
         [Permission(MyPromoteLevel.Admin)]
-        public void SendGrids(bool biggest, bool furthest, bool abandoned = false) {
+        public void SendGrids(bool biggest, bool furthest, bool abandoned = false, bool biggestBlocks = false) {
 
-            SendGridsInternal(biggest, furthest, abandoned);
+            SendGridsInternal(biggest, furthest, abandoned, biggestBlocks);
 
             Context.Respond("Defined grid GPS added!");
         }
 
-        private void SendGridsInternal(bool biggest, bool furthest, bool abandoned) {
+        private void SendGridsInternal(bool biggest, bool furthest, bool abandoned, bool biggestBlocks) {
 
             Plugin.RemoveGpsFromAllPlayers();
 
@@ -71,7 +80,10 @@ namespace ALE_Biggest_Grids_Broadcast {
             if (biggest)
                 gpsSet.UnionWith(FindGrids(BiggestGridDetectionPcuStrategy.INSTANCE, Plugin.MinPCU, Plugin.MaxDistancePlayersBiggest, Plugin.IgnoreOfflineBiggest, Plugin.IgnoreNPCs, seconds));
 
-            if(furthest)
+            if (biggestBlocks)
+                gpsSet.UnionWith(FindGrids(BiggestGridDetectionBlocksStrategy.INSTANCE, Plugin.MinBlocks, Plugin.MaxDistancePlayersBiggestBlocks, Plugin.IgnoreOfflineBiggestBlocks, Plugin.IgnoreNPCs, seconds));
+
+            if (furthest)
                 gpsSet.UnionWith(FindGrids(FurthestGridDetectionStrategy.INSTANCE, Plugin.MinDistance, Plugin.MaxDistancePlayersFurthest, Plugin.IgnoreOfflineFurthest, Plugin.IgnoreNPCs, seconds));
 
             if(abandoned)
@@ -179,28 +191,34 @@ namespace ALE_Biggest_Grids_Broadcast {
         [Command("listbiggrids", "Lists the Top X biggest grids (those which would be send to all players)!")]
         [Permission(MyPromoteLevel.Moderator)]
         public void ListBiggestGrids() {
-            ListGridsInternal(true, false, false);
+            ListGridsInternal(true, false, false, false);
         }
 
         [Command("listfargrids", "Lists the Top X furthest grids from world center (those which would be send to all players)!")]
         [Permission(MyPromoteLevel.Moderator)]
         public void ListFurthestGrids() {
-            ListGridsInternal(false, true, false);
+            ListGridsInternal(false, true, false, false);
         }
 
         [Command("listabandonedgrids", "Lists the abandoned grids (those which would be send to all players)!")]
         [Permission(MyPromoteLevel.Moderator)]
         public void ListAbandonedGrids() {
-            ListGridsInternal(false, false, true);
+            ListGridsInternal(false, false, true, false);
+        }
+
+        [Command("listbigblockgrids", "Lists the Top X biggest grids (those which would be send to all players)!")]
+        [Permission(MyPromoteLevel.Moderator)]
+        public void ListBiggestBlockGrids() {
+            ListGridsInternal(false, false, false, true);
         }
 
         [Command("listmixgrids", "Lists the Top X furthest and biggest grids (configurable)!")]
         [Permission(MyPromoteLevel.Moderator)]
-        public void ListFurthestGrids(bool biggest, bool furthest, bool abandoned = false) {
-            ListGridsInternal(biggest, furthest, abandoned);
+        public void ListFurthestGrids(bool biggest, bool furthest, bool abandoned = false, bool biggestblocks = false) {
+            ListGridsInternal(biggest, furthest, abandoned, biggestblocks);
         }
 
-        private void ListGridsInternal(bool biggest, bool furthest, bool abandoned) {
+        private void ListGridsInternal(bool biggest, bool furthest, bool abandoned, bool biggestBlocks) {
 
             StringBuilder sb = new StringBuilder();
             long seconds = GetTimeMs();
@@ -213,6 +231,9 @@ namespace ALE_Biggest_Grids_Broadcast {
 
             if (abandoned)
                 AddGridsToSb(AbandonedGridDetectionStrategy.INSTANCE, Plugin.MinDays, -1, false, sb, seconds);
+
+            if (biggestBlocks)
+                AddGridsToSb(BiggestGridDetectionBlocksStrategy.INSTANCE, Plugin.MinBlocks, Plugin.MaxDistancePlayersBiggestBlocks, Plugin.IgnoreOfflineBiggestBlocks, sb, seconds);
 
             if (Context.Player == null) 
                 Context.Respond(sb.ToString());
