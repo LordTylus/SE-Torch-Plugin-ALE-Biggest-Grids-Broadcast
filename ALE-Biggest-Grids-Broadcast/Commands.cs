@@ -69,7 +69,7 @@ namespace ALE_Biggest_Grids_Broadcast {
             long seconds = GetTimeMs();
 
             if (biggest)
-                gpsSet.UnionWith(FindGrids(BiggestGridDetectionStrategy.INSTANCE, Plugin.MinPCU, Plugin.MaxDistancePlayersBiggest, Plugin.IgnoreOfflineBiggest, Plugin.IgnoreNPCs, seconds));
+                gpsSet.UnionWith(FindGrids(BiggestGridDetectionPcuStrategy.INSTANCE, Plugin.MinPCU, Plugin.MaxDistancePlayersBiggest, Plugin.IgnoreOfflineBiggest, Plugin.IgnoreNPCs, seconds));
 
             if(furthest)
                 gpsSet.UnionWith(FindGrids(FurthestGridDetectionStrategy.INSTANCE, Plugin.MinDistance, Plugin.MaxDistancePlayersFurthest, Plugin.IgnoreOfflineFurthest, Plugin.IgnoreNPCs, seconds));
@@ -206,7 +206,7 @@ namespace ALE_Biggest_Grids_Broadcast {
             long seconds = GetTimeMs();
 
             if (biggest)
-                AddGridsToSb(BiggestGridDetectionStrategy.INSTANCE, Plugin.MinPCU, Plugin.MaxDistancePlayersBiggest, Plugin.IgnoreOfflineBiggest,  sb, seconds);
+                AddGridsToSb(BiggestGridDetectionPcuStrategy.INSTANCE, Plugin.MinPCU, Plugin.MaxDistancePlayersBiggest, Plugin.IgnoreOfflineBiggest,  sb, seconds);
 
             if (furthest)
                 AddGridsToSb(FurthestGridDetectionStrategy.INSTANCE, Plugin.MinDistance, Plugin.MaxDistancePlayersFurthest, Plugin.IgnoreOfflineFurthest, sb, seconds);

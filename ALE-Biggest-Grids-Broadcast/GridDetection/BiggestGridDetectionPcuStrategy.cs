@@ -5,11 +5,11 @@ using VRage.Collections;
 using VRage.Groups;
 
 namespace ALE_Biggest_Grids_Broadcast.GridDetection {
-    internal class BiggestGridDetectionStrategy : AbstractGridDetectionStrategy {
+    internal class BiggestGridDetectionPcuStrategy : AbstractGridDetectionStrategy {
 
-        public static readonly BiggestGridDetectionStrategy INSTANCE = new BiggestGridDetectionStrategy();
+        public static readonly BiggestGridDetectionPcuStrategy INSTANCE = new BiggestGridDetectionPcuStrategy();
 
-        private BiggestGridDetectionStrategy() {
+        private BiggestGridDetectionPcuStrategy() {
 
         }
 
