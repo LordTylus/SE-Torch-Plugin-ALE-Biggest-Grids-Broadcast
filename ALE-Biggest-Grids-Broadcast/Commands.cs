@@ -101,12 +101,40 @@ namespace ALE_Biggest_Grids_Broadcast {
 
                 var position = grid.PositionComp.GetPosition();
 
+                LogGrid(grid);
+
                 MyGps gps = CreateGps(i, grid, gpsColor, seconds);
 
                 gpsList.Add(gps);
             }
 
             return gpsList;
+        }
+
+        private void LogGrid(MyCubeGrid grid) {
+
+            try {
+
+                long ownerId = OwnershipUtils.GetOwner(grid);
+
+                string name = PlayerUtils.GetPlayerNameById(ownerId);
+
+                IMyFaction faction = GetFactionForPlayer(ownerId);
+
+                string factionString = "";
+                if (faction != null)
+                    factionString = "[" + faction.Tag + "]";
+
+                string ownedString = "Owned by: " + name + " " + factionString;
+
+                long gridId = grid.EntityId;
+                string gridName = grid.DisplayName;
+
+                Log.Info("Broadcasted " + gridId + " " + gridName + " " + ownedString);
+
+            } catch (Exception e) {
+                Log.Error(e);
+            }
         }
 
         private void SendGps(HashSet<MyGps> gpsSet, GridsBroadcastConfig config) {
