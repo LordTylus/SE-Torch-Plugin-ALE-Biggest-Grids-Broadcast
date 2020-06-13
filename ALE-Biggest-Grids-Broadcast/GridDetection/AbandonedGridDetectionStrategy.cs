@@ -27,8 +27,13 @@ namespace ALE_Biggest_Grids_Broadcast.GridDetection {
 
             DateTime today = DateTime.Today;
 
-            foreach (var group in MyCubeGridGroups.Static.Mechanical.Groups)
-                gridsList.Add(CheckGroupsDays(group.Nodes, checkFaction, today));
+            foreach (var group in MyCubeGridGroups.Static.Mechanical.Groups) {
+
+                var relevantGrids = CheckGroupsDays(group.Nodes, checkFaction, today);
+
+                if(relevantGrids.Value.Count > 0)
+                    gridsList.Add(relevantGrids);
+            }
 
             gridsList.Sort(delegate (KeyValuePair<long, List<MyCubeGrid>> pair1, KeyValuePair<long, List<MyCubeGrid>> pair2) {
                 return pair2.Key.CompareTo(pair1.Key);
@@ -51,7 +56,13 @@ namespace ALE_Biggest_Grids_Broadcast.GridDetection {
                 gridsList.Add(cubeGrid);
             }
 
+            if(gridsList.Count == 0)
+                return new KeyValuePair<long, List<MyCubeGrid>>(0, gridsList);
+
             MyCubeGrid biggestGrid = GridUtils.GetBiggestGridInGroup(gridsList);
+
+            if(biggestGrid == null)
+                return new KeyValuePair<long, List<MyCubeGrid>>(0, new List<MyCubeGrid>());
 
             long ownerId = OwnershipUtils.GetOwner(biggestGrid);
             long daysInactive = 0;
