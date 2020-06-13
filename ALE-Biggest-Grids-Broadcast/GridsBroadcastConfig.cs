@@ -22,6 +22,10 @@ namespace ALE_Biggest_Grids_Broadcast {
         private int _minPCU = 5000; //5000 everything below that will be ignored
         private bool _showOfflineBiggest = false;
 
+        private int _maxDistancePlayersBiggestBlocks = 1000; //1 Km
+        private int _minBlocks = 3000; //3000 everything below that will be ignored
+        private bool _showOfflineBiggestBlocks = false;
+
         private int _maxDistancePlayersFurthest = 1000; //1 Km
         private int _minDistance = 3_000_000; //only further than 3,000 M away
         private bool _showOfflineFurthest = false;
@@ -77,5 +81,9 @@ namespace ALE_Biggest_Grids_Broadcast {
 
         public bool PlayGpsSound { get => _playGpsSound; set => SetValue(ref _playGpsSound, value); }
         public bool GpsFollowGrids { get => _gpsFollowGrids; set => SetValue(ref _gpsFollowGrids, value); }
+
+        public int MaxDistancePlayersBiggestBlocks { get => _maxDistancePlayersBiggestBlocks; set => SetValue(ref _maxDistancePlayersBiggestBlocks, value); }
+        public int MinBlocks { get => _minBlocks; set => SetValue(ref _minBlocks, value); }
+        public bool ShowOfflineBiggestBlocks { get => _showOfflineBiggestBlocks; set => SetValue(ref _showOfflineBiggestBlocks, value); }
     }
 }

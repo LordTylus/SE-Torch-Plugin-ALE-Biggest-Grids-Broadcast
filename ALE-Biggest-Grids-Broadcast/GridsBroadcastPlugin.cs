@@ -36,11 +36,14 @@ namespace ALE_Biggest_Grids_Broadcast
         public bool UseConnectedGrids { get { return Config.UseConnectedGrids; } }
         public bool IgnoreNPCs { get { return Config.IgnoreNPCs; } }
         public int MaxDistancePlayersBiggest { get { return Config.MaxDistancePlayersBiggest; } }
+        public int MaxDistancePlayersBiggestBlocks { get { return Config.MaxDistancePlayersBiggestBlocks; } }
         public int MaxDistancePlayersFurthest { get { return Config.MaxDistancePlayersFurthest; } }
         public int MinDistance { get { return Config.MinDistance; } }
         public bool IgnoreOfflineBiggest { get { return !Config.ShowOfflineBiggest; } }
+        public bool IgnoreOfflineBiggestBlocks { get { return !Config.ShowOfflineBiggest; } }
         public bool IgnoreOfflineFurthest { get { return !Config.ShowOfflineFurthest; } }
         public int MinPCU { get { return Config.MinPCU; } }
+        public int MinBlocks { get { return Config.MinBlocks; } }
         public bool RemoveGpsOnJoin { get { return Config.RemoveGpsOnJoin; } }
         public string GpsIdentifierName { get { return Config.GpsIdentifierName; } }
         public int MinDays { get { return Config.MinDays; } }
