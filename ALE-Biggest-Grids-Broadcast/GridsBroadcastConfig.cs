@@ -12,6 +12,7 @@ namespace ALE_Biggest_Grids_Broadcast {
         private int _topGrids = 10; //Top 10 Grids
         private bool _useConnectedGrids = false; //Only Grids and Subgrids (no connectors)
         private bool _removeGpsOnJoin = true;
+        private bool _logBroadcastedGrids = true;
         private string _gpsIdentifierName = "Doom Plugin";
 
         private int _red = 255;
@@ -85,5 +86,7 @@ namespace ALE_Biggest_Grids_Broadcast {
         public int MaxDistancePlayersBiggestBlocks { get => _maxDistancePlayersBiggestBlocks; set => SetValue(ref _maxDistancePlayersBiggestBlocks, value); }
         public int MinBlocks { get => _minBlocks; set => SetValue(ref _minBlocks, value); }
         public bool ShowOfflineBiggestBlocks { get => _showOfflineBiggestBlocks; set => SetValue(ref _showOfflineBiggestBlocks, value); }
+
+        public bool LogBroadcastedGrids { get => _logBroadcastedGrids; set => SetValue(ref _logBroadcastedGrids, value); }
     }
 }

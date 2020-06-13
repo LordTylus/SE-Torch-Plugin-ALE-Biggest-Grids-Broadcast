@@ -113,7 +113,8 @@ namespace ALE_Biggest_Grids_Broadcast {
 
                 var position = grid.PositionComp.GetPosition();
 
-                LogGrid(grid);
+                if(Plugin.LogBroadcastedGrids)
+                    LogGrid(grid);
 
                 MyGps gps = CreateGps(i, grid, gpsColor, seconds);
 
