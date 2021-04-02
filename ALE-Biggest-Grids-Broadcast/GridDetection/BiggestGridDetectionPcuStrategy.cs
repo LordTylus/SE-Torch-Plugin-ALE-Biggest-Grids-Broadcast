@@ -72,19 +72,12 @@ namespace ALE_Biggest_Grids_Broadcast.GridDetection {
                 {
                     List<MyProjectorBase> projs = new List<MyProjectorBase>();
                     var gts = MyAPIGateway.TerminalActionsHelper.GetTerminalSystemForGrid(cubeGrid);
-
                     gts.GetBlocksOfType(projs);
-                    if (projs.Count != 0)
+                    foreach (var proj in projs)
                     {
-                        foreach (var proj in projs)
-                        {
-
-                            List<MyObjectBuilder_CubeGrid> grids = proj.Clipboard.CopiedGrids;
-                            foreach (MyObjectBuilder_CubeGrid objectBuilderCubeGrid in grids)
-                            {
-                                pcu -= objectBuilderCubeGrid.CubeBlocks.Count;
-                            }
-                        }
+                        List<MyObjectBuilder_CubeGrid> grids = proj.Clipboard.CopiedGrids;
+                        foreach (MyObjectBuilder_CubeGrid objectBuilderCubeGrid in grids)
+                            pcu -= objectBuilderCubeGrid.CubeBlocks.Count;
                     }
                 }
                 pcu += cubeGrid.BlocksPCU;
@@ -113,19 +106,12 @@ namespace ALE_Biggest_Grids_Broadcast.GridDetection {
                 {
                     List<MyProjectorBase> projs = new List<MyProjectorBase>();
                     var gts = MyAPIGateway.TerminalActionsHelper.GetTerminalSystemForGrid(cubeGrid);
-
                     gts.GetBlocksOfType(projs);
-                    if (projs.Count != 0)
+                    foreach (var proj in projs)
                     {
-                        foreach (var proj in projs)
-                        {
-
-                            List<MyObjectBuilder_CubeGrid> grids = proj.Clipboard.CopiedGrids;
-                            foreach (MyObjectBuilder_CubeGrid objectBuilderCubeGrid in grids)
-                            {
-                                pcu -= objectBuilderCubeGrid.CubeBlocks.Count;
-                            }
-                        }
+                        List<MyObjectBuilder_CubeGrid> grids = proj.Clipboard.CopiedGrids;
+                        foreach (MyObjectBuilder_CubeGrid objectBuilderCubeGrid in grids)
+                            pcu -= objectBuilderCubeGrid.CubeBlocks.Count;
                     }
                 }
 
