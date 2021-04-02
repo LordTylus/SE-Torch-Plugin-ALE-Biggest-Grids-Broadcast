@@ -68,19 +68,22 @@ namespace ALE_Biggest_Grids_Broadcast.GridDetection {
                     continue;
 
                 gridsList.Add(cubeGrid);
-                List<MyProjectorBase> projs = new List<MyProjectorBase>();
-                var gts = MyAPIGateway.TerminalActionsHelper.GetTerminalSystemForGrid(cubeGrid);
-
-                gts.GetBlocksOfType(projs);
-                if (projs.Count != 0)
+                if (config.ExcludeProjectionPCU)
                 {
-                    foreach (var proj in projs)
-                    {
+                    List<MyProjectorBase> projs = new List<MyProjectorBase>();
+                    var gts = MyAPIGateway.TerminalActionsHelper.GetTerminalSystemForGrid(cubeGrid);
 
-                        List<MyObjectBuilder_CubeGrid> grids = proj.Clipboard.CopiedGrids;
-                        foreach (MyObjectBuilder_CubeGrid objectBuilderCubeGrid in grids)
+                    gts.GetBlocksOfType(projs);
+                    if (projs.Count != 0)
+                    {
+                        foreach (var proj in projs)
                         {
-                            pcu -= objectBuilderCubeGrid.CubeBlocks.Count;
+
+                            List<MyObjectBuilder_CubeGrid> grids = proj.Clipboard.CopiedGrids;
+                            foreach (MyObjectBuilder_CubeGrid objectBuilderCubeGrid in grids)
+                            {
+                                pcu -= objectBuilderCubeGrid.CubeBlocks.Count;
+                            }
                         }
                     }
                 }
@@ -106,20 +109,22 @@ namespace ALE_Biggest_Grids_Broadcast.GridDetection {
                     continue;
 
                 gridsList.Add(cubeGrid);
-
-                List<MyProjectorBase> projs = new List<MyProjectorBase>();
-                var gts = MyAPIGateway.TerminalActionsHelper.GetTerminalSystemForGrid(cubeGrid);
-                
-                gts.GetBlocksOfType(projs);
-                if (projs.Count != 0)
+                if (config.ExcludeProjectionPCU)
                 {
-                    foreach (var proj in projs)
-                    {
+                    List<MyProjectorBase> projs = new List<MyProjectorBase>();
+                    var gts = MyAPIGateway.TerminalActionsHelper.GetTerminalSystemForGrid(cubeGrid);
 
-                        List<MyObjectBuilder_CubeGrid> grids = proj.Clipboard.CopiedGrids;
-                        foreach (MyObjectBuilder_CubeGrid objectBuilderCubeGrid in grids)
+                    gts.GetBlocksOfType(projs);
+                    if (projs.Count != 0)
+                    {
+                        foreach (var proj in projs)
                         {
-                            pcu -= objectBuilderCubeGrid.CubeBlocks.Count;
+
+                            List<MyObjectBuilder_CubeGrid> grids = proj.Clipboard.CopiedGrids;
+                            foreach (MyObjectBuilder_CubeGrid objectBuilderCubeGrid in grids)
+                            {
+                                pcu -= objectBuilderCubeGrid.CubeBlocks.Count;
+                            }
                         }
                     }
                 }

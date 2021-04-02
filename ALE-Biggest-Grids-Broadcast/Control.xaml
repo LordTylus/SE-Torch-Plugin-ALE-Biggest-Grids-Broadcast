@@ -114,6 +114,9 @@
         <TextBlock Grid.Column="0"              Grid.Row ="18" VerticalAlignment="Center" Text="When all faction members are offline show grids regardless of player distance" Margin="5" TextWrapping="Wrap"/>
         <CheckBox Name="ShowOfflineBiggest"     Grid.Row ="18" Grid.Column="1" Grid.ColumnSpan="3" Margin="5" IsChecked="{Binding ShowOfflineBiggest}"/>
 
+        <TextBlock Grid.Column="2"              Grid.Row ="18" VerticalAlignment="Center" Text="Exclude Projection PCU" Margin="5" TextWrapping="Wrap"/>
+        <CheckBox Name="ExcludeProjectionPCU"     Grid.Row ="18" Grid.Column="3" Grid.ColumnSpan="3" Margin="5" IsChecked="{Binding ExcludeProjectionPCU}"/>
+
         <TextBlock Grid.Column="0"              Grid.Row ="19" VerticalAlignment="Center" Text="Settings for biggest grids (Blocks)" Margin="5" FontWeight="Bold" Grid.ColumnSpan="4" />
 
         <TextBlock Grid.Column="0"              Grid.Row ="20" VerticalAlignment="Center" Text="Only check biggest grids where a faction member is in radius of (m)" Margin="5" TextWrapping="Wrap" />
