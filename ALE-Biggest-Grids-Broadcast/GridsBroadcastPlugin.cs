@@ -32,6 +32,7 @@ namespace ALE_Biggest_Grids_Broadcast
 
         public void Save() => _config.Save();
 
+        public bool ExcludeProjectionPCU { get { return Config.ExcludeProjectionPCU; } }
         public int TopGrids { get { return Config.TopGrids; } }
         public bool UseConnectedGrids { get { return Config.UseConnectedGrids; } }
         public bool IgnoreNPCs { get { return Config.IgnoreNPCs; } }

@@ -26,6 +26,7 @@ namespace ALE_Biggest_Grids_Broadcast {
         private int _maxDistancePlayersBiggestBlocks = 1000; //1 Km
         private int _minBlocks = 3000; //3000 everything below that will be ignored
         private bool _showOfflineBiggestBlocks = false;
+        private bool _excludeProjectionPCU = false;
 
         private int _maxDistancePlayersFurthest = 1000; //1 Km
         private int _minDistance = 3_000_000; //only further than 3,000 M away
@@ -53,6 +54,7 @@ namespace ALE_Biggest_Grids_Broadcast {
 
         public int MaxDistancePlayersBiggest{ get => _maxDistancePlayersBiggest; set => SetValue(ref _maxDistancePlayersBiggest, value); }
         public int MinPCU { get => _minPCU; set => SetValue(ref _minPCU, value); }
+        public bool ExcludeProjectionPCU { get => _excludeProjectionPCU; set => SetValue(ref _excludeProjectionPCU, value); }
         public bool ShowOfflineBiggest { get => _showOfflineBiggest; set => SetValue(ref _showOfflineBiggest, value); }
 
         public int MaxDistancePlayersFurthest { get => _maxDistancePlayersFurthest; set => SetValue(ref _maxDistancePlayersFurthest, value); }
