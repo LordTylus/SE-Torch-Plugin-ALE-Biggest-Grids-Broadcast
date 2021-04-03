@@ -51,6 +51,7 @@ namespace ALE_Biggest_Grids_Broadcast.GridDetection {
 
             return gridsList;
         }
+
         private long CountProjectionPCU(MyCubeGrid grid) {
 
             long pcu = 0;
