@@ -18,6 +18,8 @@ namespace ALE_Biggest_Grids_Broadcast.GridDetection {
 
         string GetUnitName();
 
+        string GetStrategyName();
+
         void WriteSettings(StringBuilder sb, int top, int playerdistance, int min, bool filterOffline, bool ignoreNpcs, bool connected, GridsBroadcastConfig pluginConfig);
     }
 }

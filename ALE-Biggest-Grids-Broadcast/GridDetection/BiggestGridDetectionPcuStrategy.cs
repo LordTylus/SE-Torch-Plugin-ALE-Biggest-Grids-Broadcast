@@ -2,6 +2,7 @@
 using Sandbox.Game.Entities.Blocks;
 using Sandbox.ModAPI;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using VRage.Collections;
 using VRage.Game;
@@ -14,6 +15,10 @@ namespace ALE_Biggest_Grids_Broadcast.GridDetection {
 
         private BiggestGridDetectionPcuStrategy() {
 
+        }
+
+        public override string GetStrategyName() {
+            return "Biggest Grid PCU";
         }
 
         public override string GetUnitName() {
@@ -60,7 +65,7 @@ namespace ALE_Biggest_Grids_Broadcast.GridDetection {
             var gridTerminalSystem = MyAPIGateway.TerminalActionsHelper.GetTerminalSystemForGrid(grid);
             
             gridTerminalSystem.GetBlocksOfType(projectors);
-            
+
             foreach (var projector in projectors) {
             
                 List<MyObjectBuilder_CubeGrid> grids = projector.Clipboard.CopiedGrids;

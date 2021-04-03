@@ -147,5 +147,7 @@ namespace ALE_Biggest_Grids_Broadcast.GridDetection {
         public abstract void WriteSettings(StringBuilder sb, int top, int playerdistance, int min, bool filterOffline, bool ignoreNpcs, bool connected, GridsBroadcastConfig pluginConfig);
 
         public abstract string GetUnitName();
+
+        public abstract string GetStrategyName();
     }
 }
