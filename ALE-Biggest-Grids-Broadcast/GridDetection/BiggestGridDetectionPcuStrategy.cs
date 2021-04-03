@@ -1,15 +1,13 @@
 ﻿using Sandbox.Game.Entities;
 using Sandbox.Game.Entities.Blocks;
-using Sandbox.Game.Entities.Cube;
-using Sandbox.ModAPI;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using VRage.Collections;
-using VRage.Game;
 using VRage.Groups;
 
 namespace ALE_Biggest_Grids_Broadcast.GridDetection {
+
     internal class BiggestGridDetectionPcuStrategy : AbstractGridDetectionStrategy {
 
         public static readonly BiggestGridDetectionPcuStrategy INSTANCE = new BiggestGridDetectionPcuStrategy();
@@ -61,18 +59,19 @@ namespace ALE_Biggest_Grids_Broadcast.GridDetection {
         private long CountProjectionPCU(MyCubeGrid grid) {
 
             long pcu = 0;
-            /*loop over the projectors in the grid */
-            foreach (var projector in grid.GetFatBlocks().OfType<MyProjectorBase>()) {
-                /*if the projector isn't enabled, dont count its projected pcu*/
 
+            /* loop over the projectors in the grid */
+            foreach (var projector in grid.GetFatBlocks().OfType<MyProjectorBase>()) {
+
+                /* if the projector isn't enabled, dont count its projected pcu */
                 if (!projector.Enabled)
                     continue;
 
                 List<MyCubeGrid> grids = projector.Clipboard.PreviewGrids;
-                /*count the blocks in the projected grid*/
+
+                /* count the blocks in the projected grid */
                 foreach (MyCubeGrid CubeGrid in grids)
                     pcu += CubeGrid.CubeBlocks.Count;
-                
             }
 
             return pcu;
