@@ -1,7 +1,9 @@
 ﻿using Sandbox.Game.Entities;
 using Sandbox.Game.Entities.Blocks;
+using Sandbox.Game.Entities.Cube;
 using Sandbox.ModAPI;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using VRage.Collections;
 using VRage.Game;
@@ -53,14 +55,17 @@ namespace ALE_Biggest_Grids_Broadcast.GridDetection {
         }
         private long CountProjectionPCU(MyCubeGrid grid) {
             long pcu = 0;
-            List<MyProjectorBase> projectors = new List<MyProjectorBase>();
-            var gridTerminalSystem = MyAPIGateway.TerminalActionsHelper.GetTerminalSystemForGrid(grid);
-            gridTerminalSystem.GetBlocksOfType(projectors);
-            foreach (var projector in projectors) {
-                List<MyObjectBuilder_CubeGrid> grids = projector.Clipboard.CopiedGrids;
-                foreach (MyObjectBuilder_CubeGrid objectBuilderCubeGrid in grids)
-                    pcu += objectBuilderCubeGrid.CubeBlocks.Count;
+            foreach (MySlimBlock block in grid.GetBlocks()) {
+                if (block.FatBlock != null && block.FatBlock is MyProjectorBase projector) {
+                    if (projector.CubeGrid.EntityId == grid.EntityId && projector.Enabled) {
+                        List<MyObjectBuilder_CubeGrid> grids = projector.Clipboard.CopiedGrids;
+                        foreach (MyObjectBuilder_CubeGrid objectBuilderCubeGrid in grids) {
+                            pcu += objectBuilderCubeGrid.CubeBlocks.Count;
+                        }
+                    }
+                }
             }
+        
             return pcu;
         }
         private KeyValuePair<long, List<MyCubeGrid>> CheckGroupsPcu(HashSetReader<MyGroups<MyCubeGrid, MyGridMechanicalGroupData>.Node> nodes, GridsBroadcastConfig config) {
