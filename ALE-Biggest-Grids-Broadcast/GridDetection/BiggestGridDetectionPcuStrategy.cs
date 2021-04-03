@@ -61,9 +61,9 @@ namespace ALE_Biggest_Grids_Broadcast.GridDetection {
                 if (block.FatBlock != null && block.FatBlock is MyProjectorBase projector) {
                     //if the projector is enabled and the entity id of the grid its on matches the one we are checking, count the pcu
                     if (projector.CubeGrid.EntityId == grid.EntityId && projector.Enabled) {
-                        List<MyObjectBuilder_CubeGrid> grids = projector.Clipboard.CopiedGrids;
-                        foreach (MyObjectBuilder_CubeGrid objectBuilderCubeGrid in grids) {
-                            pcu += objectBuilderCubeGrid.CubeBlocks.Count;
+                        List<MyCubeGrid> grids = projector.Clipboard.PreviewGrids;
+                        foreach (MyCubeGrid CubeGrid in grids) {
+                            pcu += CubeGrid.CubeBlocks.Count;
                         }
                     }
                 }
