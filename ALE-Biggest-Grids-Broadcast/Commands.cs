@@ -114,7 +114,7 @@ namespace ALE_Biggest_Grids_Broadcast {
                 var position = grid.PositionComp.GetPosition();
 
                 if(Plugin.LogBroadcastedGrids)
-                    LogGrid(grid);
+                    LogGrid(grid, gridDetectionStrategy);
 
                 MyGps gps = CreateGps(i, grid, gpsColor, seconds);
 
@@ -124,7 +124,7 @@ namespace ALE_Biggest_Grids_Broadcast {
             return gpsList;
         }
 
-        private void LogGrid(MyCubeGrid grid) {
+        private void LogGrid(MyCubeGrid grid, IGridDetectionStrategy gridDetectionStrategy) {
 
             try {
 
@@ -143,7 +143,7 @@ namespace ALE_Biggest_Grids_Broadcast {
                 long gridId = grid.EntityId;
                 string gridName = grid.DisplayName;
 
-                Log.Info("Broadcasted " + gridId + " " + gridName + " " + ownedString);
+                Log.Info("Broadcasted " + gridId + " " + gridName + " " + ownedString + " for '" + gridDetectionStrategy.GetStrategyName() + "'");
 
             } catch (Exception e) {
                 Log.Error(e);

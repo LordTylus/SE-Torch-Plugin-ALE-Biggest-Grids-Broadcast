@@ -15,6 +15,10 @@ namespace ALE_Biggest_Grids_Broadcast.GridDetection {
 
         }
 
+        public override string GetStrategyName() {
+            return "Inactive Grid";
+        }
+
         public override string GetUnitName() {
             return "Days";
         }

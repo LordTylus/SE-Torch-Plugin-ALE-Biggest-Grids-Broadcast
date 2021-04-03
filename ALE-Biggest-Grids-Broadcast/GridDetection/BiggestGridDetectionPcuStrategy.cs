@@ -18,6 +18,10 @@ namespace ALE_Biggest_Grids_Broadcast.GridDetection {
 
         }
 
+        public override string GetStrategyName() {
+            return "Biggest Grid PCU";
+        }
+
         public override string GetUnitName() {
             return "PCU";
         }
@@ -53,21 +57,29 @@ namespace ALE_Biggest_Grids_Broadcast.GridDetection {
 
             return gridsList;
         }
-        private long CountProjectionPCU(MyCubeGrid grid) {
+
+        private long CountProjectionPCU(MyCubeGrid grid)
+        {
+
             long pcu = 0;
-             /*loop over the projectors in the grid */
-            foreach (var projector in grid.GetFatBlocks().OfType<MyProjectorBase>()) {
-                 /*if the projector is enabled and the entity id of the grid its on matches the one we are checking, count the projected blocks */
-                if (projector.CubeGrid.EntityId == grid.EntityId && projector.Enabled) {
-                    List<MyCubeGrid> grids = projector.Clipboard.PreviewGrids;
-                    foreach (MyCubeGrid CubeGrid in grids) {
-                        pcu += CubeGrid.CubeBlocks.Count;
-                    }
-                }
+            /*loop over the projectors in the grid */
+            foreach (var projector in grid.GetFatBlocks().OfType<MyProjectorBase>())
+            {
+                /*if the projector is enabled and the entity id of the grid its on matches the one we are checking, count the projected blocks */
+
+                if (!projector.Enabled)
+                    continue;
+
+                List<MyCubeGrid> grids = projector.Clipboard.PreviewGrids;
+
+                foreach (MyCubeGrid CubeGrid in grids)
+                    pcu += CubeGrid.CubeBlocks.Count;
+                
             }
 
             return pcu;
         }
+
         private KeyValuePair<long, List<MyCubeGrid>> CheckGroupsPcu(HashSetReader<MyGroups<MyCubeGrid, MyGridMechanicalGroupData>.Node> nodes, GridsBroadcastConfig config) {
 
             List<MyCubeGrid> gridsList = new List<MyCubeGrid>();
@@ -84,10 +96,11 @@ namespace ALE_Biggest_Grids_Broadcast.GridDetection {
                     continue;
 
                 gridsList.Add(cubeGrid);
-                if (config.ExcludeProjectionPCU) {
-                    pcu -= CountProjectionPCU(cubeGrid);
-                }
+
                 pcu += cubeGrid.BlocksPCU;
+
+                if (config.ExcludeProjectionPCU) 
+                    pcu -= CountProjectionPCU(cubeGrid);
             }
 
             return new KeyValuePair<long, List<MyCubeGrid>>(pcu, gridsList);
@@ -109,11 +122,11 @@ namespace ALE_Biggest_Grids_Broadcast.GridDetection {
                     continue;
 
                 gridsList.Add(cubeGrid);
-                if (config.ExcludeProjectionPCU) {
-                    pcu -= CountProjectionPCU(cubeGrid);
-                }
-
+                
                 pcu += cubeGrid.BlocksPCU;
+
+                if (config.ExcludeProjectionPCU) 
+                    pcu -= CountProjectionPCU(cubeGrid);
             }
 
             return new KeyValuePair<long, List<MyCubeGrid>>(pcu, gridsList);
