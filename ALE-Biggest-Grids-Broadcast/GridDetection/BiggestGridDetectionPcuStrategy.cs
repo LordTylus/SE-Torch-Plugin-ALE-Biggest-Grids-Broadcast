@@ -1,5 +1,6 @@
 ﻿using Sandbox.Game.Entities;
 using Sandbox.Game.Entities.Blocks;
+using Sandbox.Game.Entities.Cube;
 using Sandbox.ModAPI;
 using System.Collections.Generic;
 using System.Linq;
@@ -60,20 +61,20 @@ namespace ALE_Biggest_Grids_Broadcast.GridDetection {
         private long CountProjectionPCU(MyCubeGrid grid) {
 
             long pcu = 0;
-            
-            List<MyProjectorBase> projectors = new List<MyProjectorBase>();
-            var gridTerminalSystem = MyAPIGateway.TerminalActionsHelper.GetTerminalSystemForGrid(grid);
-            
-            gridTerminalSystem.GetBlocksOfType(projectors);
+            /*loop over the projectors in the grid */
+            foreach (var projector in grid.GetFatBlocks().OfType<MyProjectorBase>()) {
+                /*if the projector isn't enabled, dont count its projected pcu*/
 
-            foreach (var projector in projectors) {
-            
-                List<MyObjectBuilder_CubeGrid> grids = projector.Clipboard.CopiedGrids;
+                if (!projector.Enabled)
+                    continue;
+
+                List<MyCubeGrid> grids = projector.Clipboard.PreviewGrids;
+                /*count the blocks in the projected grid*/
+                foreach (MyCubeGrid CubeGrid in grids)
+                    pcu += CubeGrid.CubeBlocks.Count;
                 
-                foreach (MyObjectBuilder_CubeGrid objectBuilderCubeGrid in grids)
-                    pcu += objectBuilderCubeGrid.CubeBlocks.Count;
             }
-            
+
             return pcu;
         }
 
