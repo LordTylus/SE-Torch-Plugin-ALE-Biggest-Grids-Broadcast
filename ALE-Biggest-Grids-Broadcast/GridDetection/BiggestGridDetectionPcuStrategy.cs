@@ -63,13 +63,13 @@ namespace ALE_Biggest_Grids_Broadcast.GridDetection {
             long pcu = 0;
             /*loop over the projectors in the grid */
             foreach (var projector in grid.GetFatBlocks().OfType<MyProjectorBase>()) {
-                /*if the projector is enabled and the entity id of the grid its on matches the one we are checking, count the projected blocks */
+                /*if the projector isn't enabled, dont count its projected pcu*/
 
                 if (!projector.Enabled)
                     continue;
 
                 List<MyCubeGrid> grids = projector.Clipboard.PreviewGrids;
-
+                /*count the blocks in the projected grid*/
                 foreach (MyCubeGrid CubeGrid in grids)
                     pcu += CubeGrid.CubeBlocks.Count;
                 
