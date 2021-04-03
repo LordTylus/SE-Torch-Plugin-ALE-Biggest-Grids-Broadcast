@@ -51,7 +51,18 @@ namespace ALE_Biggest_Grids_Broadcast.GridDetection {
 
             return gridsList;
         }
-
+        private long CountProjectionPCU(MyCubeGrid grid) {
+            long pcu = 0;
+            List<MyProjectorBase> projectors = new List<MyProjectorBase>();
+            var gridTerminalSystem = MyAPIGateway.TerminalActionsHelper.GetTerminalSystemForGrid(grid);
+            gridTerminalSystem.GetBlocksOfType(projectors);
+            foreach (var projector in projectors) {
+                List<MyObjectBuilder_CubeGrid> grids = projector.Clipboard.CopiedGrids;
+                foreach (MyObjectBuilder_CubeGrid objectBuilderCubeGrid in grids)
+                    pcu += objectBuilderCubeGrid.CubeBlocks.Count;
+            }
+            return pcu;
+        }
         private KeyValuePair<long, List<MyCubeGrid>> CheckGroupsPcu(HashSetReader<MyGroups<MyCubeGrid, MyGridMechanicalGroupData>.Node> nodes, GridsBroadcastConfig config) {
 
             List<MyCubeGrid> gridsList = new List<MyCubeGrid>();
@@ -68,17 +79,8 @@ namespace ALE_Biggest_Grids_Broadcast.GridDetection {
                     continue;
 
                 gridsList.Add(cubeGrid);
-                if (config.ExcludeProjectionPCU)
-                {
-                    List<MyProjectorBase> projs = new List<MyProjectorBase>();
-                    var gts = MyAPIGateway.TerminalActionsHelper.GetTerminalSystemForGrid(cubeGrid);
-                    gts.GetBlocksOfType(projs);
-                    foreach (var proj in projs)
-                    {
-                        List<MyObjectBuilder_CubeGrid> grids = proj.Clipboard.CopiedGrids;
-                        foreach (MyObjectBuilder_CubeGrid objectBuilderCubeGrid in grids)
-                            pcu -= objectBuilderCubeGrid.CubeBlocks.Count;
-                    }
+                if (config.ExcludeProjectionPCU) {
+                    pcu -= CountProjectionPCU(cubeGrid);
                 }
                 pcu += cubeGrid.BlocksPCU;
             }
@@ -102,17 +104,8 @@ namespace ALE_Biggest_Grids_Broadcast.GridDetection {
                     continue;
 
                 gridsList.Add(cubeGrid);
-                if (config.ExcludeProjectionPCU)
-                {
-                    List<MyProjectorBase> projs = new List<MyProjectorBase>();
-                    var gts = MyAPIGateway.TerminalActionsHelper.GetTerminalSystemForGrid(cubeGrid);
-                    gts.GetBlocksOfType(projs);
-                    foreach (var proj in projs)
-                    {
-                        List<MyObjectBuilder_CubeGrid> grids = proj.Clipboard.CopiedGrids;
-                        foreach (MyObjectBuilder_CubeGrid objectBuilderCubeGrid in grids)
-                            pcu -= objectBuilderCubeGrid.CubeBlocks.Count;
-                    }
+                if (config.ExcludeProjectionPCU) {
+                    pcu -= CountProjectionPCU(cubeGrid);
                 }
 
                 pcu += cubeGrid.BlocksPCU;
