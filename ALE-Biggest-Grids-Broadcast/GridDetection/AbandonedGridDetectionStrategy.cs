@@ -74,22 +74,30 @@ namespace ALE_Biggest_Grids_Broadcast.GridDetection {
             if (ownerId != 0L && !PlayerUtils.IsNpc(ownerId)) {
 
                 var identity = PlayerUtils.GetIdentityById(ownerId);
-                var lastSeenDate = PlayerUtils.GetLastSeenDate(identity);
 
-                daysInactive = (today - lastSeenDate).Days;
+                if (identity != null) {
 
-                if (checkFaction) {
+                    var lastSeenDate = PlayerUtils.GetLastSeenDate(identity);
 
-                    var faction = FactionUtils.GetPlayerFaction(ownerId);
+                    daysInactive = (today - lastSeenDate).Days;
 
-                    if (faction != null) {
+                    if (checkFaction) {
 
-                        foreach (long member in faction.Members.Keys) {
+                        var faction = FactionUtils.GetPlayerFaction(ownerId);
 
-                            identity = PlayerUtils.GetIdentityById(member);
-                            lastSeenDate = PlayerUtils.GetLastSeenDate(identity);
+                        if (faction != null) {
 
-                            daysInactive = Math.Min(daysInactive, (today - lastSeenDate).Days);
+                            foreach (long member in faction.Members.Keys) {
+
+                                identity = PlayerUtils.GetIdentityById(member);
+
+                                if (identity == null)
+                                    continue;
+
+                                lastSeenDate = PlayerUtils.GetLastSeenDate(identity);
+
+                                daysInactive = Math.Min(daysInactive, (today - lastSeenDate).Days);
+                            }
                         }
                     }
                 }
