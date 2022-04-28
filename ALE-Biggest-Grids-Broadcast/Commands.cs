@@ -169,7 +169,7 @@ namespace ALE_Biggest_Grids_Broadcast {
                     if (followGrids)
                         entityId = gps.EntityId;
 
-                    gpsCollection.SendAddGps(player.Identity.IdentityId, ref gpsRef, entityId, playSound);
+                    gpsCollection.SendAddGpsRequest(player.Identity.IdentityId, ref gpsRef, entityId, playSound);
                 }
             }
         }
