@@ -149,5 +149,7 @@ namespace ALE_Biggest_Grids_Broadcast.GridDetection {
         public abstract string GetUnitName();
 
         public abstract string GetStrategyName();
+
+        public abstract DetectionType GetDetectionType();
     }
 }

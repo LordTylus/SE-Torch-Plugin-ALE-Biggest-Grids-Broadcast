@@ -146,6 +146,7 @@
     <Compile Include="ALE-Biggest-Grids-Broadcast\GridDetection\AbandonedGridDetectionStrategy.cs" />
     <Compile Include="ALE-Biggest-Grids-Broadcast\GridDetection\BiggestGridDetectionBlocksStrategy.cs" />
     <Compile Include="ALE-Biggest-Grids-Broadcast\GridDetection\BiggestGridDetectionPcuStrategy.cs" />
+    <Compile Include="ALE-Biggest-Grids-Broadcast\GridDetection\DetectionType.cs" />
     <Compile Include="ALE-Biggest-Grids-Broadcast\GridDetection\FurthestGridDetectionStrategy.cs" />
     <Compile Include="ALE-Biggest-Grids-Broadcast\GridDetection\IGridDetectionStrategy.cs" />
     <Compile Include="ALE-Biggest-Grids-Broadcast\GridsBroadcastPlugin.cs" />
@@ -164,11 +165,11 @@
   </ItemGroup>
   <Import Project="..\ALE-Core\ALE-Core.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-    <ItemGroup>
-        <Content Include="$(ProjectDir)\manifest.xml" CopyToOutputDirectory="PreserveNewest" />
-    </ItemGroup>
-    <Target Name="Zip" BeforeTargets="AfterBuild">
-        <MakeDir Directories="$(SolutionDir)\Build\" />
-        <ZipDirectory SourceDirectory="$(OutputPath)" DestinationFile="$(SolutionDir)\Build\$(MSBuildProjectName).zip" Overwrite="true" />
-    </Target>
+  <ItemGroup>
+    <Content Include="$(ProjectDir)\manifest.xml" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+  <Target Name="Zip" BeforeTargets="AfterBuild">
+    <MakeDir Directories="$(SolutionDir)\Build\" />
+    <ZipDirectory SourceDirectory="$(OutputPath)" DestinationFile="$(SolutionDir)\Build\$(MSBuildProjectName).zip" Overwrite="true" />
+  </Target>
 </Project>

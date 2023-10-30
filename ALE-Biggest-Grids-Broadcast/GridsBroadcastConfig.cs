@@ -19,6 +19,28 @@ namespace ALE_Biggest_Grids_Broadcast {
         private int _green = 0;
         private int _blue = 0;
 
+        private bool _separateColors = false;
+
+        private bool _showOnHudBiggest = true;
+        private int _redBiggest = 255;
+        private int _greenBiggest = 0;
+        private int _blueBiggest = 0;
+
+        private bool _showOnHudDistance = true;
+        private int _redDistance = 255;
+        private int _greenDistance = 50;
+        private int _blueDistance = 50;
+
+        private bool _showOnHudInactive = true;
+        private int _redInactive = 255;
+        private int _greenInactive = 100;
+        private int _blueInactive = 100;
+
+        private bool _showOnHudBlocks = true;
+        private int _redBlocks = 255;
+        private int _greenBlocks = 150;
+        private int _blueBlocks = 150;
+
         private int _maxDistancePlayersBiggest = 1000; //1 Km
         private int _minPCU = 5000; //5000 everything below that will be ignored
         private bool _showOfflineBiggest = false;
@@ -67,6 +89,28 @@ namespace ALE_Biggest_Grids_Broadcast {
         public int ColorRed { get => _red; set => SetValue(ref _red, value); }
         public int ColorGreen { get => _green; set => SetValue(ref _green, value); }
         public int ColorBlue { get => _blue; set => SetValue(ref _blue, value); }
+
+        public bool SeparateColors { get => _separateColors; set => SetValue(ref _separateColors, value); }
+
+        public bool ShowOnHudDistance { get => _showOnHudDistance; set => SetValue(ref _showOnHudDistance, value); }
+        public int ColorRedDistance { get => _redDistance; set => SetValue(ref _redDistance, value); }
+        public int ColorGreenDistance { get => _greenDistance; set => SetValue(ref _greenDistance, value); }
+        public int ColorBlueDistance { get => _blueDistance; set => SetValue(ref _blueDistance, value); }
+
+        public bool ShowOnHudBiggest { get => _showOnHudBiggest; set => SetValue(ref _showOnHudBiggest, value); }
+        public int ColorRedBiggest { get => _redBiggest; set => SetValue(ref _redBiggest, value); }
+        public int ColorGreenBiggest { get => _greenBiggest; set => SetValue(ref _greenBiggest, value); }
+        public int ColorBlueBiggest { get => _blueBiggest; set => SetValue(ref _blueBiggest, value); }
+
+        public bool ShowOnHudInactive{ get => _showOnHudInactive; set => SetValue(ref _showOnHudInactive, value); }
+        public int ColorRedInactive { get => _redInactive; set => SetValue(ref _redInactive, value); }
+        public int ColorGreenInactive { get => _greenInactive; set => SetValue(ref _greenInactive, value); }
+        public int ColorBlueInactive { get => _blueInactive; set => SetValue(ref _blueInactive, value); }
+
+        public bool ShowOnHudBlocks { get => _showOnHudBlocks; set => SetValue(ref _showOnHudBlocks, value); }
+        public int ColorRedBlocks { get => _redBlocks; set => SetValue(ref _redBlocks, value); }
+        public int ColorGreenBlocks { get => _greenBlocks; set => SetValue(ref _greenBlocks, value); }
+        public int ColorBlueBlocks { get => _blueBlocks; set => SetValue(ref _blueBlocks, value); }
 
         public double CenterX { get => _centerX; set => SetValue(ref _centerX, value); }
         public double CenterY { get => _centerY; set => SetValue(ref _centerY, value); }

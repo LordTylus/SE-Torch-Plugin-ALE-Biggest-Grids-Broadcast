@@ -15,6 +15,10 @@ namespace ALE_Biggest_Grids_Broadcast.GridDetection {
 
         }
 
+        public override DetectionType GetDetectionType() {
+            return DetectionType.FURTHEST;
+        }
+
         public override string GetStrategyName() {
             return "Furthest Grid";
         }

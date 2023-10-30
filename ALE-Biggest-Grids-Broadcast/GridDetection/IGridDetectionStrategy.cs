@@ -16,6 +16,8 @@ namespace ALE_Biggest_Grids_Broadcast.GridDetection {
         int min, int playerdistance, int top, bool filterOffline,
         bool ignoreNpcs);
 
+        DetectionType GetDetectionType();
+
         string GetUnitName();
 
         string GetStrategyName();

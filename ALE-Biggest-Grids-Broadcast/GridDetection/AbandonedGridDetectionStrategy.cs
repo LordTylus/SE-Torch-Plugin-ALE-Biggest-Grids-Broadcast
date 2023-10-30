@@ -15,6 +15,10 @@ namespace ALE_Biggest_Grids_Broadcast.GridDetection {
 
         }
 
+        public override DetectionType GetDetectionType() {
+            return DetectionType.ABANDONED;
+        }
+
         public override string GetStrategyName() {
             return "Inactive Grid";
         }

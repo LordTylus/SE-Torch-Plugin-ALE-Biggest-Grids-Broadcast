@@ -50,17 +50,6 @@ namespace ALE_Biggest_Grids_Broadcast
         public int MinDays { get { return Config.MinDays; } }
         public bool LogBroadcastedGrids { get { return Config.LogBroadcastedGrids; } }
 
-        public Color GpsColor {
-
-            get {
-
-                return new Color(
-                    Math.Min(255, Config.ColorRed),
-                    Math.Min(255, Config.ColorGreen),
-                    Math.Min(255, Config.ColorBlue));
-            }
-        }
-
         private Control _control;
         public UserControl GetControl() => _control ?? (_control = new Control(this));
 

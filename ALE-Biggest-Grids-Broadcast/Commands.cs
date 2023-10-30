@@ -74,23 +74,37 @@ namespace ALE_Biggest_Grids_Broadcast {
 
             Plugin.RemoveGpsFromAllPlayers();
 
-            HashSet<MyGps> gpsSet = new HashSet<MyGps>();
+            HashSet<Vector3> gpsSet = new HashSet<Vector3>();
+            List<MyGps> gpsList = new List<MyGps>();
+
             long seconds = GetTimeMs();
 
             if (biggest)
-                gpsSet.UnionWith(FindGrids(BiggestGridDetectionPcuStrategy.INSTANCE, Plugin.MinPCU, Plugin.MaxDistancePlayersBiggest, Plugin.IgnoreOfflineBiggest, Plugin.IgnoreNPCs, seconds));
-
-            if (biggestBlocks)
-                gpsSet.UnionWith(FindGrids(BiggestGridDetectionBlocksStrategy.INSTANCE, Plugin.MinBlocks, Plugin.MaxDistancePlayersBiggestBlocks, Plugin.IgnoreOfflineBiggestBlocks, Plugin.IgnoreNPCs, seconds));
+                AddToList(gpsSet, gpsList, FindGrids(BiggestGridDetectionPcuStrategy.INSTANCE, Plugin.MinPCU, Plugin.MaxDistancePlayersBiggest, Plugin.IgnoreOfflineBiggest, Plugin.IgnoreNPCs, seconds));
 
             if (furthest)
-                gpsSet.UnionWith(FindGrids(FurthestGridDetectionStrategy.INSTANCE, Plugin.MinDistance, Plugin.MaxDistancePlayersFurthest, Plugin.IgnoreOfflineFurthest, Plugin.IgnoreNPCs, seconds));
+                AddToList(gpsSet, gpsList, FindGrids(FurthestGridDetectionStrategy.INSTANCE, Plugin.MinDistance, Plugin.MaxDistancePlayersFurthest, Plugin.IgnoreOfflineFurthest, Plugin.IgnoreNPCs, seconds));
 
-            if(abandoned)
-                gpsSet.UnionWith(FindGrids(AbandonedGridDetectionStrategy.INSTANCE, Plugin.MinDays, -1, false, true, seconds));
+            if (abandoned)
+                AddToList(gpsSet, gpsList, FindGrids(AbandonedGridDetectionStrategy.INSTANCE, Plugin.MinDays, -1, false, true, seconds));
+
+            if (biggestBlocks)
+                AddToList(gpsSet, gpsList, FindGrids(BiggestGridDetectionBlocksStrategy.INSTANCE, Plugin.MinBlocks, Plugin.MaxDistancePlayersBiggestBlocks, Plugin.IgnoreOfflineBiggestBlocks, Plugin.IgnoreNPCs, seconds));
 
             if (gpsSet.Count > 0)
-                SendGps(gpsSet, Plugin.Config);
+                SendGps(gpsList, Plugin.Config);
+        }
+
+        private void AddToList(HashSet<Vector3> positions, List<MyGps> returnList, List<MyGps> inputList) {
+
+            foreach (var gps in inputList) {
+
+                if (positions.Contains(gps.Coords))
+                    continue;
+
+                positions.Add(gps.Coords);
+                returnList.Add(gps);
+            } 
         }
 
         private List<MyGps> FindGrids(IGridDetectionStrategy gridDetectionStrategy, int min, int distance, bool ignoreOffline, bool ignoreNpcs, long seconds) {
@@ -103,8 +117,6 @@ namespace ALE_Biggest_Grids_Broadcast {
 
             int i = 0;
 
-            Color gpsColor = Plugin.GpsColor;
-
             foreach (KeyValuePair<long, List<MyCubeGrid>> pair in filteredGrids) {
 
                 i++;
@@ -116,7 +128,7 @@ namespace ALE_Biggest_Grids_Broadcast {
                 if(Plugin.LogBroadcastedGrids)
                     LogGrid(grid, gridDetectionStrategy);
 
-                MyGps gps = CreateGps(i, grid, gpsColor, seconds);
+                MyGps gps = CreateGps(i, grid, seconds, gridDetectionStrategy.GetDetectionType());
 
                 gpsList.Add(gps);
             }
@@ -150,7 +162,7 @@ namespace ALE_Biggest_Grids_Broadcast {
             }
         }
 
-        private void SendGps(HashSet<MyGps> gpsSet, GridsBroadcastConfig config) {
+        private void SendGps(IEnumerable<MyGps> gpsSet, GridsBroadcastConfig config) {
 
             MyGpsCollection gpsCollection = (MyGpsCollection)MyAPIGateway.Session?.GPS;
 
@@ -305,8 +317,6 @@ namespace ALE_Biggest_Grids_Broadcast {
 
             int i = 0;
 
-            Color gpsColor = Plugin.GpsColor;
-
             if (gps && Context.Player != null)
                 Plugin.RemoveGpsFromPlayer(Context.Player.IdentityId);
 
@@ -347,7 +357,7 @@ namespace ALE_Biggest_Grids_Broadcast {
 
                 if (gps && Context.Player != null) {
 
-                    MyGps gridGPS = CreateGps(i, grid, gpsColor, seconds);
+                    MyGps gridGPS = CreateGps(i, grid, seconds, DetectionType.BIGGEST_PCU);
 
                     MyAPIGateway.Session?.GPS.AddGps(Context.Player.IdentityId, gridGPS);
                 }
@@ -361,7 +371,11 @@ namespace ALE_Biggest_Grids_Broadcast {
             return (long)(DateTime.Now.ToUniversalTime() - new DateTime(1970, 1, 1)).TotalMilliseconds;
         }
 
-        private MyGps CreateGps(int index, MyCubeGrid grid, Color gpsColor, long seconds) {
+        private MyGps CreateGps(int index, MyCubeGrid grid, long seconds, DetectionType detectionType) {
+
+            var config = Plugin.Config;
+
+            var gpsColor = CreateGpsColor(config, detectionType);
 
             MyGps gps = new MyGps {
                 Coords = grid.PositionComp.GetPosition(),
@@ -370,13 +384,68 @@ namespace ALE_Biggest_Grids_Broadcast {
                 Description = ($"Top Grid: Grid currently in Top {index} by {Plugin.GpsIdentifierName}"),
                 GPSColor = gpsColor,
                 IsContainerGPS = true,
-                ShowOnHud = true,
+                ShowOnHud = IsShowOnHud(detectionType),
                 DiscardAt = new TimeSpan?()
             };
             gps.UpdateHash();
             gps.SetEntityId(grid.EntityId);
 
             return gps;
+        }
+
+        private bool IsShowOnHud(DetectionType detectionType) {
+
+            switch (detectionType) {
+
+                case DetectionType.BIGGEST_PCU:
+                    return Plugin.Config.ShowOnHudBiggest;
+                case DetectionType.FURTHEST:
+                    return Plugin.Config.ShowOnHudDistance;
+                case DetectionType.ABANDONED:
+                    return Plugin.Config.ShowOnHudInactive;
+                case DetectionType.BIGGEST_BLOCKS:
+                    return Plugin.Config.ShowOnHudBlocks;
+                default:
+                    return true;
+            }
+        }
+
+        private Color CreateGpsColor(GridsBroadcastConfig config, DetectionType detectionType) {
+
+            if (!config.SeparateColors)
+                return new Color(
+                    config.ColorRed,
+                    config.ColorGreen,
+                    config.ColorBlue);
+
+            switch(detectionType) {
+
+                case DetectionType.BIGGEST_PCU:
+                    return new Color(
+                        config.ColorRedBiggest,
+                        config.ColorGreenBiggest,
+                        config.ColorBlueBiggest);
+                case DetectionType.FURTHEST:
+                    return new Color(
+                        config.ColorRedDistance,
+                        config.ColorGreenDistance,
+                        config.ColorBlueDistance);
+                case DetectionType.ABANDONED:
+                    return new Color(
+                        config.ColorRedInactive,
+                        config.ColorGreenInactive,
+                        config.ColorBlueInactive);
+                case DetectionType.BIGGEST_BLOCKS:
+                    return new Color(
+                        config.ColorRedBlocks,
+                        config.ColorGreenBlocks,
+                        config.ColorBlueBlocks);
+                default:
+                    return new Color(
+                        config.ColorRed,
+                        config.ColorGreen,
+                        config.ColorBlue);
+            }
         }
 
         public static MyIdentity GetIdentityById(long playerId) {

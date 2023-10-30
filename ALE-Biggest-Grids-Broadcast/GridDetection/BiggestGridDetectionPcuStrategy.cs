@@ -16,6 +16,10 @@ namespace ALE_Biggest_Grids_Broadcast.GridDetection {
 
         }
 
+        public override DetectionType GetDetectionType() {
+            return DetectionType.BIGGEST_PCU;
+        }
+
         public override string GetStrategyName() {
             return "Biggest Grid PCU";
         }
